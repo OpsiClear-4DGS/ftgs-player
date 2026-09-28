@@ -122,6 +122,12 @@ Frame rate is a playback choice: this player defaults to 30 fps and accepts
 `?fps=24`, `30` or `60`. If `n_frames` is absent, it defaults to 300 frames;
 `?frames=120` overrides the frame count.
 
+The speed selector, `?speed=1.5`, or `setPlaybackRate(1.5)` can change playback
+speed while leaving this format's stored values unchanged. Audio and persistent
+duration/FPS/speed/loop defaults belong to the optional extensions in
+[packaged TSOG](TSOG.md#audio-and-playback-metadata); FTGS PLY version 1 has no
+audio payload or playback-default fields. See [API.md](API.md) for player controls.
+
 This layout stores the Vanilla FTGS rendering parameters described above.
 Changing only a static PLY's filename does not turn it into an FTGS file. The
 generated [demo](demo.js) provides a complete writer example without training
