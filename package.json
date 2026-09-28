@@ -1,0 +1,15 @@
+{
+  "name": "ftgs-player",
+  "description": "Minimal WebGL2 player for animated FreeTimeGS .ftgs.ply files",
+  "license": "AGPL-3.0-only",
+  "homepage": "https://opsiclear-4dgs.github.io/ftgs-player/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpsiClear-4DGS/ftgs-player.git"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  }
+}

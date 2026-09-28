@@ -1,0 +1,241 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  background: #070a0c;
+  color: #e5e7eb;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+}
+[hidden] {
+  display: none !important;
+}
+.symbols {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+button,
+input {
+  font: inherit;
+}
+button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+:focus-visible {
+  outline: 2px solid #cbd5e1;
+  outline-offset: 3px;
+}
+#viewer {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  outline: none;
+}
+.empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 32px;
+  border-radius: 12px;
+  white-space: nowrap;
+  text-align: center;
+}
+.empty span {
+  display: block;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+}
+.empty small {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #7c828a;
+}
+.empty:hover small {
+  color: #c3c7ce;
+}
+.message {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
+  max-width: min(560px, calc(100% - 40px));
+  padding: 12px 16px;
+  border-radius: 9px;
+  background: #161a20ed;
+  color: #cdd2da;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+#viewer:not([data-loaded]) .message {
+  bottom: auto;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.message[data-state="error"] {
+  color: #f3b3b3;
+}
+.drop-hint {
+  position: absolute;
+  inset: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff60;
+  border-radius: 10px;
+  background: #070a0ccc;
+  font-size: 22px;
+  pointer-events: none;
+  z-index: 3;
+}
+.controls {
+  position: absolute;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(680px, calc(100% - 32px));
+  padding: 6px 10px;
+  background: #15181dd9;
+  border: 1px solid #ffffff12;
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  transition: opacity 180ms ease;
+}
+#viewer.idle .controls:not(:focus-within):not(:hover) {
+  opacity: 0;
+  pointer-events: none;
+}
+#viewer.idle #canvas {
+  cursor: none;
+}
+.controls button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  border-radius: 7px;
+}
+.controls button:hover {
+  background: #ffffff0d;
+}
+.controls svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+#play-icon[href="#play"] {
+  fill: currentColor;
+  stroke: none;
+}
+#timeline {
+  --progress: 0%;
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+  min-width: 40px;
+  height: 28px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+}
+#timeline::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    #d9dde5 var(--progress),
+    #ffffff30 var(--progress)
+  );
+}
+#timeline::-moz-range-track {
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    #d9dde5 var(--progress),
+    #ffffff30 var(--progress)
+  );
+}
+#timeline::-webkit-slider-thumb {
+  appearance: none;
+  margin-top: -3.5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #edf0f5;
+  border: 0;
+}
+#timeline::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #edf0f5;
+  border: 0;
+}
+#timecode {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: #d0d4db;
+}
+#timecode span {
+  color: #7f8793;
+  margin-left: 3px;
+}
+@media (max-width: 600px) {
+  .controls {
+    gap: 8px;
+    padding: 4px 6px;
+    width: calc(100% - 20px);
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .controls button {
+    flex-basis: 40px;
+    height: 40px;
+  }
+  #timecode {
+    font-size: 10px;
+  }
+}
+@media (max-width: 360px) {
+  #timecode span {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .controls {
+    transition: none;
+  }
+}
