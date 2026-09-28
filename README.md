@@ -8,9 +8,10 @@ site without runtime dependencies.
 [Try the generated demo](https://opsiclear-4dgs.github.io/ftgs-player/?demo=1)
 
 Drop a `.ftgs.ply` onto the page, or click to choose a file. Playback starts
-automatically and loops. The scene fills the window; a small playback bar fades
-out when idle and returns on movement or touch. The folder button opens another
-file. Local files stay in the browser.
+automatically and loops. The scene fills the window, with a full-width timeline
+and playback controls along the bottom. The controls fade during playback and
+return on movement or touch. Hover over the timeline to preview a time; use the
+folder button to open another file. Local files stay in the browser.
 
 ## Embed in another project
 
@@ -75,7 +76,7 @@ the FTGS file itself does not store capture cameras or frame rate.
 | Orbit | Left drag / one-finger drag |
 | Pan | Right drag, Shift + drag, or two-finger drag |
 | Zoom | Scroll / pinch |
-| Fit camera / restore saved view | R |
+| Fit camera / restore saved view | Reset view button or R |
 | Switch Y up / Z up | U |
 | Fullscreen | Fullscreen button or F |
 
