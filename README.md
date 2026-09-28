@@ -12,6 +12,16 @@ automatically and loops. The scene fills the window; a small playback bar fades
 out when idle and returns on movement or touch. The folder button opens another
 file. Local files stay in the browser.
 
+## Embed in another project
+
+The [embedding API](API.md) provides `FTGSPlayer` for your own canvas and
+`FTGSEmbed` for an iframe, including the hosted player. Both expose `load`,
+`play`, `pause`, `seek`, camera controls, lifecycle events, and `destroy`.
+Canvas instances are independent; iframe commands work across origins.
+See the runnable [canvas example](examples/embedding.html) and
+[iframe example](examples/embedding.html?mode=iframe), plus the React lifecycle
+example in the API guide. No runtime dependencies are required.
+
 ## Run locally
 
 From the repository root:
@@ -126,6 +136,15 @@ Pass `--browser /path/to/chromium` to use an existing browser, `--model
 file and URL loading, and `--screenshots /tmp/ftgs-player` to save screenshots.
 The smoke test serves the app at `/ftgs-player/` to check GitHub Pages path
 handling as well as playback.
+
+The API integration check covers independent canvases, cross-origin iframe
+commands, lifecycle events, cancellation, cleanup, and remounting:
+
+```bash
+uv run --no-project --with playwright python tests/browser_api.py
+```
+
+It also accepts `--browser /path/to/chromium`.
 
 ## Origin and license
 
