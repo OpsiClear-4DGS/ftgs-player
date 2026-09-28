@@ -9,10 +9,17 @@ site without runtime dependencies.
 [Try the generated demo](https://opsiclear-4dgs.github.io/ftgs-player/?demo=1)
 
 Drop a `.ftgs.ply` or `.tsog` onto the page, or click to choose a file.
-Playback starts automatically and loops. The scene fills the window, with a full-width timeline
+Playback starts automatically and uses the file's speed and loop defaults when
+provided. The scene fills the window, with a full-width timeline
 and playback controls along the bottom. The controls fade during playback and
 return on movement or touch. Hover over the timeline to preview a time; use the
 folder button to open another file. Local files stay in the browser.
+
+A `.tsog` can include an optional audio track and metadata for duration, frame
+rate, playback speed and looping. The player keeps sound and scene time in
+sync. Use the sound button to enable audio if the browser blocks autoplay.
+See [TSOG.md](TSOG.md#audio-and-playback-metadata) for the layout and a command
+to package an existing audio file without re-encoding the scene.
 
 ## Embed in another project
 
@@ -73,6 +80,9 @@ the FTGS file itself does not store capture cameras or frame rate.
 | Action | Control |
 | --- | --- |
 | Play / pause | Play button or Space |
+| Playback speed | Speed selector (0.25×–4×) |
+| Mute / enable audio | Sound button or M, when the file has audio |
+| Volume | Hover or focus the sound controls on desktop |
 | Seek / step | Timeline, or Left / Right for one frame |
 | Open another file | Folder button, O, or drop anywhere |
 | Orbit | Left drag / one-finger drag |
@@ -156,7 +166,7 @@ canonical positions to avoid distant reconstruction outliers.
 ## Development checks
 
 Parser, covariance, temporal sorting and demo checks use Node's built-in runner
-(Node 20+), without installing packages:
+(Node 22+), without installing packages:
 
 ```bash
 npm test
@@ -197,6 +207,13 @@ Physical-device testing is still needed to check camera passthrough, surface
 tracking, and performance on the target hardware.
 
 It also accepts `--browser /path/to/chromium`.
+
+The packaged-audio check generates its own synthetic tone and tests file
+metadata, media synchronization, autoplay handling, audio controls and cleanup:
+
+```bash
+uv run --no-project --with playwright python tests/browser_audio.py
+```
 
 ## Origin and license
 
