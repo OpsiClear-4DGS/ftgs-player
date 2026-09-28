@@ -1,6 +1,6 @@
 {
   "name": "ftgs-player",
-  "description": "Minimal WebGL2 player for animated FreeTimeGS .ftgs.ply files",
+  "description": "Minimal WebGL2 player for animated .ftgs.ply and packaged .tsog files",
   "license": "AGPL-3.0-only",
   "homepage": "https://opsiclear-4dgs.github.io/ftgs-player/",
   "repository": {

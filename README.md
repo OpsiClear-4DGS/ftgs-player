@@ -1,14 +1,15 @@
 # FTGS Player
 
-A minimal browser player for animated Vanilla `.ftgs.ply` files. Rendering uses
+A minimal browser player for animated Vanilla `.ftgs.ply` and packaged `.tsog` files.
+Rendering uses
 native WebGL2, with depth sorting in a Web Worker. It runs directly as a static
 site without runtime dependencies.
 
 **[Open the player](https://opsiclear-4dgs.github.io/ftgs-player/)** ·
 [Try the generated demo](https://opsiclear-4dgs.github.io/ftgs-player/?demo=1)
 
-Drop a `.ftgs.ply` onto the page, or click to choose a file. Playback starts
-automatically and loops. The scene fills the window, with a full-width timeline
+Drop a `.ftgs.ply` or `.tsog` onto the page, or click to choose a file.
+Playback starts automatically and loops. The scene fills the window, with a full-width timeline
 and playback controls along the bottom. The controls fade during playback and
 return on movement or touch. Hover over the timeline to preview a time; use the
 folder button to open another file. Local files stay in the browser.
@@ -33,7 +34,8 @@ python -m http.server 8765 --bind 127.0.0.1
 
 Open <http://localhost:8765/>. Serve the page over HTTP; opening `index.html`
 directly cannot load its modules and worker. Add `?demo=1` to play a synthetic
-ribbon generated in the browser. No model downloads are included in this repo.
+ribbon generated in the browser. Only small synthetic test fixtures are
+included in this repo.
 
 ## GitHub Pages and model links
 
@@ -48,8 +50,8 @@ The page can be hosted as static files; it has no application server, analytics,
 or remote assets.
 
 For a captured scene, a camera inside the capture area can give a much better
-initial view than fitting all points. A model link can include `fps=24`, `30` or
-`60`, and a URL-encoded JSON `view` parameter, for example:
+initial view than fitting all points. A model link can include a positive `fps`
+(such as `fps=24` or `fps=60`) and a URL-encoded JSON `view` parameter, for example:
 
 ```js
 const query = new URLSearchParams({
@@ -120,10 +122,21 @@ SH color, temporal opacity and optional velocity, and sorts animated centers
 back to front in a worker before drawing splats. Ordinary static PLY
 and `.pt` checkpoints are not inputs to this player.
 
-The frame count comes from `n_frames` when present. Playback defaults to 30 fps,
+For `.ftgs.ply`, the frame count comes from `n_frames` when present. Playback
+defaults to 30 fps,
 which is a player setting rather than information stored in FTGS v1. For files
 without a frame count, the default is 300; `?frames=120` overrides it. Frame `i`
 maps to normalized time `i / max(n_frames - 1, 1)`.
+
+Packaged **TSOG version 4** is also supported, including continuous motion,
+discrete frame sequences and static models. Drop one `.tsog` ZIP package;
+the player decodes its WebP attributes locally. Discrete files use their own
+frame count and FPS unless FPS is explicitly overridden. See [TSOG support](TSOG.md)
+for the layout, timing assumptions and limits, and for the citation to
+[Gmira et al.'s TSOG paper](https://arxiv.org/abs/2607.28049) and
+[Xiaomi Research's original repository](https://github.com/xiaomi-research/tsog).
+The original Clear BSD and PlayCanvas MIT license notices are retained in
+[THIRD_PARTY.md](THIRD_PARTY.md).
 
 The default point limit is **1 million**, sampled evenly throughout the file.
 A brief loading notice reports when sampling is active. URL options keep the
