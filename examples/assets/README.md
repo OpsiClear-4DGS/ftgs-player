@@ -24,7 +24,7 @@ retain their original rights; the code license does not relicense that content.
 
 `site/assets/social-preview.jpg` is a 1200×675 render of the same full 2M scene
 at normalized time 0.3, using its saved camera. It is the static thumbnail
-for X Player Card and Open Graph previews and retains the source media's
-original rights. The card's player URL opens the interactive 4DGS web app
-with the retained TSOG and its embedded audio. WebGL2 and the model download
+for X large-image cards and Open Graph previews and retains the source media's
+original rights. The [scene page](../jensen-2m.html) opens the interactive 4DGS
+web app with the retained TSOG and its embedded audio. WebGL2 and the model download
 are required when opening the interactive scene.

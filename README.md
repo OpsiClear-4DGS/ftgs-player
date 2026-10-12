@@ -6,7 +6,7 @@ and a small standalone website. Rendering uses WebGL2 and a sorting worker;
 there are no runtime dependencies.
 
 **[Open the player](https://opsiclear-4dgs.github.io/ftgs-player/)** ·
-**[Play example](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)** ·
+**[Play example](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html)** ·
 [Canvas example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html) ·
 [Iframe example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=iframe)
 
@@ -85,27 +85,23 @@ React component lifecycle examples.
 
 ## Share on X
 
-The player and embedding-example pages include static X Player Card and Open
-Graph tags with a 1200×675 thumbnail. The card's player URL opens the
-[interactive Jensen 2M scene](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m&autoplay=0&v=7),
-with 4DGS playback, camera navigation and the scene's embedded audio. No
-personal account attribution is attached to the card. The card starts paused;
-press Play to start the scene with audio. This avoids audible autoplay, as
-required by [X's card policy](https://docs.x.com/developer-terms/policy#x-cards).
+Share the [Jensen scene page](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html).
+It includes static `summary_large_image` and Open Graph tags with a 1200×675
+thumbnail and its own canonical URL. Clicking the image link opens the full
+interactive scene, paused with audio enabled; press Play to start playback.
+The main player and embedding examples use the same image-card format. No
+personal account attribution is attached. [Thumbnail provenance](examples/assets/README.md#social-preview).
 
-X controls whether the player opens inside its card, its in-app browser or a
-regular browser. The thumbnail and interactive player URL are configured;
-actual behavior must be checked in the X client. Both Canvas and Iframe
-example pages use the same scene thumbnail and player target.
-[Thumbnail provenance](examples/assets/README.md#social-preview).
+Image cards link to the web app; playback takes place on the scene page.
+X controls whether and when it shows a preview and whether links open in its
+in-app browser. Actual previews still need checking in X; use the dedicated
+scene URL above for a new post when testing updated metadata.
 
-[Google's interactive 3D card example](https://modelviewer.dev/examples/twitter/generator.html)
-demonstrates this embedding pattern; it does not confirm X accepts cards from
-this domain. The player is tested in ordinary cross-origin iframes and a
+The player is tested in ordinary cross-origin iframes and a
 `sandbox="allow-scripts"` iframe. Such a sandbox needs CORS access to the
 modules and model, and permission to create a `data:` module worker. Custom iframe
 controls through `FTGSEmbed` require the usual `allow-same-origin` sandbox
-permission to validate the child origin; the card uses its built-in controls.
+permission to validate the child origin. Scene pages use their built-in controls.
 
 ## Project layout
 
