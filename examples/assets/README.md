@@ -22,21 +22,9 @@ retain their original rights; the code license does not relicense that content.
 
 ## Social preview
 
-`jensen-preview.mp4` is a five-second, 24 fps render of the same full 2M scene
-and saved camera, encoded as 960×540 H.264 with AAC source audio. It is the
-linear video used by the X Player Card, not an interactive TSOG player.
-`site/assets/social-preview.jpg` is a 1200×675 render at normalized time 0.3.
-The preview and its audio retain the source media's original rights.
-
-Regenerate both from the unchanged retained TSOG using Chromium and ffmpeg:
-
-```bash
-python -m pip install -r tests/requirements.txt
-python -m playwright install chromium
-python tools/render-social-preview.py
-```
-
-The tool waits for the renderer to finish each requested timestamp before
-capturing it, and restores the saved camera. The JPEG, video and dedicated
-`examples/social-player.html` are served as static files; the social card
-requires no WebGL decoding or model download.
+`site/assets/social-preview.jpg` is a 1200×675 render of the same full 2M scene
+at normalized time 0.3, using its saved camera. It is the static thumbnail
+for X Player Card and Open Graph previews and retains the source media's
+original rights. The card's player URL opens the interactive 4DGS web app
+with the retained TSOG and its embedded audio. WebGL2 and the model download
+are required when opening the interactive scene.

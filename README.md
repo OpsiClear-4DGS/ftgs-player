@@ -86,16 +86,16 @@ React component lifecycle examples.
 ## Share on X
 
 The player and embedding-example pages include static X Player Card and Open
-Graph tags, credited to **@Yeheliu**, with a 1200×675 preview picture and a
-[five-second video preview](examples/social-player.html). The card offers a
-960×540 H.264/AAC MP4 with the original example audio; the shared page opens the
-interactive 4D player. The preview page starts paused with sound enabled.
+Graph tags with a 1200×675 thumbnail. The card's player URL opens the
+[interactive Jensen 2M scene](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m&v=6),
+with 4DGS playback, camera navigation and the scene's embedded audio. No
+personal account attribution is attached to the card.
 
-These tags follow [X's official Player Card example](https://github.com/xdevplatform/cards-player-samples).
-X controls whether a post shows inline playback or an image/link preview.
-The static card always uses the retained Jensen example, including when a URL
-selects Canvas or Iframe mode. Metadata and assets can be checked in a browser;
-actual card rendering must be checked on X. [Preview provenance and regeneration](examples/assets/README.md#social-preview).
+X controls whether the player opens inside its card, its in-app browser or a
+regular browser. The thumbnail and interactive player URL are configured;
+actual behavior must be checked in the X client. Both Canvas and Iframe
+example pages use the same scene thumbnail and player target.
+[Thumbnail provenance](examples/assets/README.md#social-preview).
 
 ## Project layout
 
