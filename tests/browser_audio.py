@@ -17,7 +17,7 @@ def main():
     # All media is generated in memory. No recorded scene or audio is used.
     bundle = subprocess.check_output(["node", "--input-type=module", "-e", """
       import { readFile } from 'node:fs/promises';
-      import { packageTSOG } from './tsog-package.js';
+      import { packageTSOG } from './src/tsog-package.js';
       import { toneFile } from './tests/audio-fixture.mjs';
       const blob = await packageTSOG(new Blob([await readFile('tests/fixtures/tsog/continuous16.tsog')]), {
         audio: toneFile(), playback: {duration:4, fps:24, rate:1.25, loop:false}, volume:0.4,
@@ -138,7 +138,7 @@ def main():
               if (audioURLs.size !== 1 || !audioElements[0].paused) throw new Error('Failed-load audio cleanup');
               await player.load('./tests/fixtures/tsog/static.tsog');
               if (audioURLs.size || player.state.audio.available) throw new Error('Track not released');
-              const {packageTSOG} = await import('./tsog-package.js');
+              const {packageTSOG} = await import('./src/tsog-package.js');
               await player.load(await packageTSOG(bundle, {playback:{loop:true}}));
               player.setPlaybackRate(1); player.seek(0.99); player.play();
             }""")
@@ -146,7 +146,7 @@ def main():
 
             # An audio track shorter than the scene ends once and restarts on the scene's loop.
             page.evaluate("""async () => {
-              const {packageTSOG} = await import('./tsog-package.js');
+              const {packageTSOG} = await import('./src/tsog-package.js');
               const {toneFile} = await import('./tests/audio-fixture.mjs');
               await player.load(await packageTSOG(bundle, {audio:toneFile(0.2), playback:{duration:0.8, loop:true}}));
               player.play();
@@ -156,7 +156,7 @@ def main():
 
             # Static scenes can carry a timed soundtrack; unknown codecs fail only the audio.
             page.evaluate("""async () => {
-              const {packageTSOG} = await import('./tsog-package.js');
+              const {packageTSOG} = await import('./src/tsog-package.js');
               const {toneFile} = await import('./tests/audio-fixture.mjs');
               const still = await (await fetch('./tests/fixtures/tsog/static.tsog')).blob();
               await player.load(await packageTSOG(still, {audio:toneFile(), playback:{duration:4}}));

@@ -1,11 +1,13 @@
-import { FTGSPlayer } from "./player.js?v=9";
-import { attachPlayerBridge } from "./bridge.js?v=9";
+import { FTGSPlayer } from "../src/player.js";
+import { attachPlayerBridge } from "./bridge.js";
 import { demoFile } from "./demo.js";
-import { mountPlayerShell } from "./shell.js?v=6";
+import { mountPlayerShell } from "./shell.js";
+import { readExample } from "./examples.js";
 
 mountPlayerShell(document.getElementById("viewer"));
 const $ = (id) => document.getElementById(id);
 const query = new URLSearchParams(location.search);
+const exampleId = query.get("src") ? null : query.get("example");
 const requestedFps = Number(query.get("fps"));
 const fps =
   Number.isFinite(requestedFps) && requestedFps > 0 ? requestedFps : null;
@@ -15,7 +17,7 @@ const maxPoints =
     ? Infinity
     : Number.isSafeInteger(requestedPoints) && requestedPoints > 0
       ? requestedPoints
-      : 1000000;
+      : exampleId === "jensen-2m" ? Infinity : 1000000;
 const requestedFrames = Number(query.get("frames"));
 const requestedRate = Number(query.get("speed"));
 const requestedVolume = Number(query.get("volume"));
@@ -220,6 +222,7 @@ try {
   player.addEventListener(
     "loadstart",
     ({ detail }) => {
+      $("welcome").hidden = true;
       $("empty").hidden = true;
       $("play-toggle").disabled =
         $("timeline").disabled =
@@ -281,6 +284,7 @@ try {
   player.addEventListener(
     "abort",
     ({ detail }) => {
+      $("welcome").hidden = detail.loaded;
       $("empty").hidden = detail.loaded;
       $("play-toggle").disabled = $("timeline").disabled = !detail.playable;
       $("reset-view").disabled = !detail.loaded;
@@ -545,10 +549,24 @@ try {
     void load(url, {
       view: query.has("view") ? JSON.parse(query.get("view")) : null,
     });
-  else if (query.get("demo") === "1" || $("viewer").dataset.demo === "true")
+  else if (exampleId) {
+    try {
+      $("welcome").hidden = true;
+      status("Opening Jensen example…", "loading");
+      const example = await readExample(exampleId);
+      await load(example.source, {
+        name: example.title,
+        view: query.has("view") ? JSON.parse(query.get("view")) : example.view,
+      });
+    } catch (error) {
+      $("controls").hidden = !showControls;
+      status(error.message, "error");
+    }
+  } else if (query.get("demo") === "1" || $("viewer").dataset.demo === "true")
     void load(demoFile(), { name: "Kinetic ribbon" });
 } catch (error) {
   teardown();
+  $("welcome").hidden = true;
   $("empty").hidden = true;
   status(error.message, "error");
 }

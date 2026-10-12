@@ -1,15 +1,15 @@
 // Repository-owned TSOG v4 decoder, based on Xiaomi Research's format/encoder.
 // Paper, original repository, compatibility notes and licenses: TSOG.md and THIRD_PARTY.md.
-import { boundsForModel, covarianceFromQuaternion } from "./ftgs.js?v=6";
-import { openZip } from "./zip.js?v=8";
-import { AttributeImages } from "./webp.js?v=7";
+import { boundsForModel, covarianceFromQuaternion } from "./ftgs.js";
+import { openZip } from "./zip.js";
+import { AttributeImages } from "./webp.js";
 import {
   validatePlaybackMetadata,
   audioMimeType,
   MAX_AUDIO_BYTES,
   isPackagePath,
   resolvePlayback,
-} from "./playback.js?v=9";
+} from "./playback.js";
 
 export const TSOG_PROFILE = Object.freeze({
   id: "org.opsiclear.tsog-playback",

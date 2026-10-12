@@ -1,4 +1,4 @@
-/** Markup shared by the standalone player and the canvas example. */
+/** The standalone website UI; importing the canvas library adds no markup. */
 export function mountPlayerShell(viewer) {
   viewer.innerHTML = `
     <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -11,14 +11,30 @@ export function mountPlayerShell(viewer) {
         <symbol id="reset" viewBox="0 0 24 24"><path d="M4.5 10a7.5 7.5 0 1 1 1.7 7M4.5 4.5V10H10" /></symbol>
         <symbol id="expand" viewBox="0 0 24 24"><path d="M8.5 4.5h-4v4m11-4h4v4m-15 7v4h4m11-4v4h-4" /></symbol>
         <symbol id="collapse" viewBox="0 0 24 24"><path d="M4.5 8.5h4v-4m7 0v4h4m-15 7h4v4m7 0v-4h4" /></symbol>
+        <symbol id="add" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+        <symbol id="code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16" /></symbol>
+        <symbol id="source" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 4v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.3 4.4 4.4 0 0 0-.1-3.3s-1-.3-3.4 1.3a11.4 11.4 0 0 0-6.2 0C6.3 2.4 5.3 2.7 5.3 2.7a4.4 4.4 0 0 0-.1 3.3 4.7 4.7 0 0 0-1.3 3.3c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3V21" /></symbol>
       </defs>
     </svg>
     <canvas id="canvas" tabindex="0" aria-label="3D scene. Drag to orbit, Shift-drag to pan, scroll to zoom. WASD to move, Q/E down/up, Shift to move faster."></canvas>
-    <button id="empty" class="empty" aria-label="Choose a .ftgs.ply or .tsog file">
-      <span class="empty-icon"><svg aria-hidden="true"><use href="#play" /></svg></span>
-      <span class="empty-title">Drop a .ftgs.ply or .tsog to play</span>
-      <span class="empty-caption">or click to open a file</span>
-    </button>
+    <section id="welcome" class="welcome" aria-labelledby="welcome-title">
+      <div class="welcome-heading">
+        <h1 id="welcome-title">FTGS Player</h1>
+        <nav id="welcome-links" aria-label="Player resources">
+          <a class="icon-button" href="./examples/embedding.html" aria-label="Embedding examples" title="Embedding examples"><svg aria-hidden="true"><use href="#code" /></svg></a>
+          <a class="icon-button" href="https://github.com/OpsiClear-4DGS/ftgs-player" aria-label="Source code" title="Source code"><svg aria-hidden="true"><use href="#source" /></svg></a>
+        </nav>
+      </div>
+      <button id="empty" class="empty" aria-label="Choose a .ftgs.ply or .tsog file">
+        <svg class="empty-icon" aria-hidden="true"><use href="#add" /></svg>
+        <span class="empty-title">Open a 4D scene</span>
+        <span class="empty-caption">Drop a .tsog or .ftgs.ply file, or click to browse</span>
+      </button>
+      <div class="welcome-actions">
+        <a class="button example-link" href="?example=jensen-2m"><svg aria-hidden="true"><use href="#play" /></svg>Try Jensen <span>2M · 45 MB</span></a>
+        <a class="license-link" href="./LICENSE">AGPL-3.0</a>
+      </div>
+    </section>
     <input id="file" type="file" accept=".ply,.tsog" hidden aria-label="Open splat file" />
     <div id="message" class="message" role="status" hidden></div>
     <div id="ar-hint" class="message ar-hint" role="status" hidden></div>

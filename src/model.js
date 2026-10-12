@@ -1,4 +1,4 @@
-import { readFTGS } from "./ftgs.js?v=6";
+import { readFTGS } from "./ftgs.js";
 
 /** Detect packaged TSOG by its ZIP signature; keep filename-free Blob loading. */
 export async function readModel(blob, options = {}) {
@@ -8,7 +8,7 @@ export async function readModel(blob, options = {}) {
     signature.byteLength === 4 &&
     signature.getUint32(0, true) === 0x04034b50
   ) {
-    const { readTSOG } = await import("./tsog.js?v=9");
+    const { readTSOG } = await import("./tsog.js");
     return readTSOG(blob, options);
   }
   return {

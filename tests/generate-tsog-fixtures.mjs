@@ -6,7 +6,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { tsogColumns, tsogRow } from "./tsog-source.mjs";
-import { openZip } from "../zip.js";
+import { openZip } from "../src/zip.js";
 
 if (!process.argv[2]) throw new Error("Pass a built reference repository path.");
 const { writeTsog, loadSplatTransform } = await import(pathToFileURL(resolve(process.argv[2], "dist/index.mjs")));

@@ -1,32 +1,90 @@
-// Both integration paths use the same player presentation.
-if (new URLSearchParams(location.search).get("mode") === "iframe") {
-  const { FTGSEmbed } = await import("../embed.js?v=6");
-  const { demoFile } = await import("../demo.js");
-  const frame = document.createElement("iframe");
-  frame.className = "embedded-player";
-  frame.title = "FTGS player";
-  frame.allowFullscreen = true;
-  frame.allow = "autoplay; xr-spatial-tracking";
-  document.querySelector("#viewer").replaceWith(frame);
-  const player = new FTGSEmbed(frame, {
-    src: new URL("../?autoplay=0", import.meta.url).href,
-  });
-  try {
-    await player.ready;
-    await player.load(demoFile(), { name: "Generated demo" });
-  } catch (error) {
-    if (error.name !== "AbortError") {
-      const message = document.createElement("p");
-      message.className = "message";
-      message.setAttribute("role", "status");
-      message.textContent = error.message;
-      document.body.append(message);
-    }
-  }
-  addEventListener("pagehide", (event) => {
-    if (!event.persisted) player.destroy();
-  });
-} else {
-  // app.js binds this shell's controls to an independent FTGSPlayer canvas.
-  await import("../app.js?v=6");
+import { FTGSPlayer, FTGSEmbed } from "../index.js";
+import { demoFile } from "../site/demo.js";
+import { readExample } from "../site/examples.js";
+
+const $ = (id) => document.getElementById(id);
+const query = new URLSearchParams(location.search);
+const iframe = query.get("mode") === "iframe";
+const nativeUI = iframe && query.get("ui") === "player";
+const exampleId = query.get("example");
+if (nativeUI) document.querySelector(".transport").hidden = true;
+$("description").textContent = iframe
+  ? "A host controls the standalone player through its iframe API."
+  : "An independent canvas uses the library with the host's own styles and controls.";
+$("jensen-example").href = `?mode=${iframe ? "iframe" : "canvas"}&example=jensen-2m`;
+for (const mode of ["canvas", "iframe"]) {
+  const link = $(`${mode}-example`);
+  const params = new URLSearchParams({ mode });
+  if (exampleId) params.set("example", exampleId);
+  link.href = `?${params}`;
+  if ((iframe ? "iframe" : "canvas") === mode) link.setAttribute("aria-current", "page");
 }
+
+let player;
+function update(state) {
+  $("viewer").dataset.state = state.status;
+  if (state.loaded) $("viewer").dataset.loaded = "true";
+  $("play-toggle").disabled = !state.playable;
+  const label = state.playing ? "Pause" : "Play";
+  $("play-toggle").setAttribute("aria-label", label);
+  $("play-toggle").title = label;
+  $("play-icon").setAttribute("href", state.playing ? "#pause" : "#play");
+  $("timeline").disabled = !state.playable;
+  $("timeline").value = state.time;
+  $("timeline").style.setProperty("--progress", `${state.time * 100}%`);
+  $("timecode").textContent = `${state.currentTime.toFixed(1)} / ${state.duration.toFixed(1)} s`;
+  $("message").textContent = state.error ?? "";
+  const silent = state.audio.muted || state.audio.volume === 0 || state.audio.status === "blocked";
+  $("mute-toggle").hidden = !state.audio.available;
+  $("mute-toggle").disabled = state.audio.status === "error";
+  $("mute-toggle").setAttribute("aria-label", silent ? "Unmute" : "Mute");
+  $("mute-toggle").title = silent ? "Unmute" : "Mute";
+  $("mute-toggle").setAttribute("aria-pressed", String(state.audio.muted));
+  $("audio-icon").setAttribute("href", silent ? "#silent" : "#sound");
+}
+
+try {
+  if (iframe) {
+    const frame = document.createElement("iframe");
+    frame.title = "Embedded 4D scene";
+    frame.allow = "autoplay; xr-spatial-tracking";
+    frame.allowFullscreen = true;
+    $("viewer").replaceChildren(frame);
+    const src = new URL(`../?autoplay=0&controls=${nativeUI ? "1" : "0"}`, import.meta.url);
+    if (exampleId) src.searchParams.set("points", "all");
+    player = new FTGSEmbed(frame, { src });
+    await player.ready;
+  } else {
+    player = new FTGSPlayer($("canvas"), {
+      autoplay: false,
+      maxPoints: exampleId ? Infinity : 1000000,
+    });
+  }
+  for (const type of ["loaded", "play", "pause", "timeupdate", "audiochange", "error"])
+    player.addEventListener(type, ({ detail }) => update(detail));
+  $("play-toggle").onclick = async () => {
+    try { update(await (player.state.playing ? player.pause() : player.play())); }
+    catch (error) { $("message").textContent = error.message; }
+  };
+  $("timeline").oninput = async () => {
+    try {
+      const time = Number($("timeline").value);
+      await player.pause();
+      update(await player.seek(time));
+    } catch (error) { $("message").textContent = error.message; }
+  };
+  $("mute-toggle").onclick = async () => {
+    try {
+      const audio = player.state.audio;
+      if (audio.volume === 0) await player.setVolume(1);
+      update(await player.setMuted(audio.status === "blocked" || audio.volume === 0 ? false : !audio.muted));
+    } catch (error) { $("message").textContent = error.message; }
+  };
+  if (exampleId) {
+    const example = await readExample(exampleId);
+    update(await player.load(example.source, { name: example.title, view: example.view }));
+  } else update(await player.load(demoFile(), { name: "Generated demo" }));
+} catch (error) {
+  if (error.name !== "AbortError") $("message").textContent = error.message;
+}
+addEventListener("pagehide", (event) => { if (!event.persisted) player?.destroy(); });

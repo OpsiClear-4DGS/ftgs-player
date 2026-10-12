@@ -1,4 +1,4 @@
-import { canUseXR } from "./xr.js?v=4";
+import { canUseXR } from "./xr.js";
 
 const VERTEX = `#version 300 es
 precision highp float;
@@ -161,7 +161,7 @@ export class SplatRenderer {
     gl.disable(gl.DEPTH_TEST);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clearColor(0.027, 0.039, 0.047, 1);
+    gl.clearColor(10 / 255, 10 / 255, 10 / 255, 1);
   }
   makeTexture(values) {
     const gl = this.gl,
@@ -256,7 +256,7 @@ export class SplatRenderer {
         canvas.height = height;
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.clearColor(0.027, 0.039, 0.047, 1);
+      gl.clearColor(10 / 255, 10 / 255, 10 / 255, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       viewport = { x: 0, y: 0, width, height };
     }

@@ -58,7 +58,7 @@ def main():
 
     def drop_demo(page):
         transfer = page.evaluate_handle("""async () => {
-          const {demoFile} = await import('./demo.js');
+          const {demoFile} = await import('./site/demo.js');
           const transfer = new DataTransfer();
           transfer.items.add(new File([demoFile()], 'ribbon.ftgs.ply'));
           return transfer;
@@ -120,7 +120,7 @@ def main():
             page.mouse.move(110, 110)
             page.wait_for_function("getComputedStyle(document.querySelector('#controls')).opacity === '1'")
             projection = page.evaluate("""async () => {
-              const {SplatRenderer} = await import('./renderer.js');
+              const {SplatRenderer} = await import('./src/renderer.js');
               const canvas = document.createElement('canvas');
               canvas.style.cssText = 'position:fixed;left:-1000px;width:64px;height:64px';
               document.body.append(canvas);

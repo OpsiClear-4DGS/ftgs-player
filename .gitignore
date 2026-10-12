@@ -10,3 +10,8 @@ __pycache__/
 .DS_Store
 *.tsog
 !tests/fixtures/tsog/*.tsog
+
+# Published Jensen example is deliberately retained.
+!examples/assets/jensen-2m.tsog
+dist/
+*.tgz

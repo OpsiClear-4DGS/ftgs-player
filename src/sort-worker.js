@@ -1,4 +1,4 @@
-import { sortVisible } from "./sort.js?v=6";
+import { sortVisible } from "./sort.js";
 let model;
 self.onmessage = ({ data }) => {
   try {

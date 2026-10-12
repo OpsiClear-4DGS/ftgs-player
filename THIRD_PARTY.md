@@ -3,7 +3,7 @@
 The repository-owned TSOG decoder implements the packaged version-4 layout
 published by [Xiaomi Research / tsog](https://github.com/xiaomi-research/tsog),
 including its temporal image encodings and the underlying PlayCanvas SOG
-attribute conventions. [TSOG.md](TSOG.md) contains the paper citation,
+attribute conventions. [TSOG.md](docs/TSOG.md) contains the paper citation,
 reference revision, supported layout and fixture provenance.
 
 These notices accompany the format implementation and synthetic interoperability
@@ -11,6 +11,24 @@ fixtures. No reference encoder, PlayCanvas engine, or WebP library binary is
 bundled with the player; WebP decoding uses the browser. Retain these notices
 when redistributing the module, including copies embedded into other projects.
 The player's own code is licensed under the repository's AGPL-3.0-only license.
+
+## Website design and fonts
+
+The standalone UI adapts the design tokens and visual conventions from
+[COLMAPView](https://github.com/ColmapView/Colmapview.github.io), an AGPL-3.0
+project. See [the design notes](docs/DESIGN.md). Its renderer and components
+are not bundled here.
+
+The website self-hosts IBM Plex Sans (IBM Corp.) and JetBrains Mono (JetBrains
+s.r.o.), both under the SIL Open Font License 1.1. Font files and complete
+notices are in [site/fonts](site/fonts/):
+
+- [IBM Plex license](site/fonts/IBM-Plex-OFL.txt); the Latin variable font is
+  sourced from COLMAPView's `public/fonts`.
+- [JetBrains Mono license](site/fonts/JetBrains-Mono-OFL.txt); the regular web
+  font is sourced from [JetBrains/JetBrainsMono](https://github.com/JetBrains/JetBrainsMono).
+
+The fonts and website styles are excluded from the reusable npm package.
 
 ## Xiaomi Research TSOG — Clear BSD License
 
