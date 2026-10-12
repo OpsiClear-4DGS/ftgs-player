@@ -19,6 +19,10 @@ uses its saved camera, and includes audio in a 45.1 MB TSOG. It downloads only
 when selected, using small byte-range requests with download progress and bounded
 retries. [Example provenance and download](examples/assets/README.md).
 
+TSOG loading preserves shared color palettes, reuses covariance buffers and
+decodes large batches with time-budgeted yields. It keeps every Gaussian and
+color coefficient. [Loading benchmarks and quality checks](docs/PERFORMANCE.md).
+
 The website follows [COLMAPView's design system](https://colmapview.github.io/):
 neutral dark panels, silver accents and compact icon controls.
 [Theme and layout notes](docs/DESIGN.md).

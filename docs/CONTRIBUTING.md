@@ -41,6 +41,17 @@ and cleanup in cross-origin and opaque-origin iframes. This verifies browser
 compatibility; X card acceptance requires a real post and testing in X clients.
 Actual device AR support and performance still need physical-device testing.
 
+To profile loading with all example points, excluding network time from decoding:
+
+```bash
+python tools/benchmark-loading.py --output /tmp/loading.json --capture
+```
+
+Run with `--compare /tmp/baseline.json` after changing the decoder or renderer
+to require identical attribute and rendered-frame hashes. The benchmark uses
+headless Chromium with software WebGL; see [PERFORMANCE.md](PERFORMANCE.md) for
+the measured stages and limits. Keep large benchmark artifacts outside the repo.
+
 Keep synthetic fixtures reproducible; do not replace them with a training
 result. New recorded examples need provenance, a checksum and their original
 media attribution. `examples/assets/jensen-2m.tsog` is intentionally retained
