@@ -1,4 +1,4 @@
-// Optional player metadata in TSOG's root meta.json. See TSOG.md.
+// Optional player metadata in TSOG's root meta.json. See ../docs/TSOG.md.
 export const MAX_AUDIO_BYTES = 128 * 1024 * 1024;
 
 // ZIP entry names are case-sensitive literal paths, never URLs.

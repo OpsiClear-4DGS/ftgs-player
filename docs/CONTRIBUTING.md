@@ -17,7 +17,7 @@ npm pack --dry-run
 Browser checks use optional Python test dependencies:
 
 ```bash
-python -m pip install -r requirements-dev.txt
+python -m pip install -r tests/requirements.txt
 python -m playwright install chromium
 python tests/browser_smoke.py
 python tests/browser_api.py

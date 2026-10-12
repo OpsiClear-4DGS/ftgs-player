@@ -196,6 +196,7 @@ def main():
             assert "surface" in page.locator("#ar-hint").inner_text()
             page.evaluate("navigator.xr.session.dispatchEvent(new Event('select'))")
             assert "Placed" in page.locator("#ar-hint").inner_text()
+            page.locator("#more-controls").click()
             page.locator("#reset-view").click()
             assert "Placed" not in page.locator("#ar-hint").inner_text()
             page.locator("#ar").click()

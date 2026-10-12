@@ -10,7 +10,7 @@ await mkdir(output, { recursive: true });
 for (const path of [
   "index.html", "index.js", "player.js", "embed.js", ".nojekyll",
   "src", "site", "examples", "docs", "tsog.schema.json",
-  "LICENSE", "THIRD_PARTY.md", "CONTRIBUTING.md", "README.md",
+  "LICENSE", "README.md",
 ]) {
   await cp(new URL(path, root), new URL(path, output), { recursive: true });
 }

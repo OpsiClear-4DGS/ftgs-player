@@ -7,10 +7,10 @@ const query = new URLSearchParams(location.search);
 const iframe = query.get("mode") === "iframe";
 const nativeUI = iframe && query.get("ui") === "player";
 const exampleId = query.get("example");
-if (nativeUI) document.querySelector(".transport").hidden = true;
+if (nativeUI) $("controls").hidden = true;
 $("description").textContent = iframe
-  ? "A host controls the standalone player through its iframe API."
-  : "An independent canvas uses the library with the host's own styles and controls.";
+  ? "A hosted player with controls on this page."
+  : "A canvas player with its own playback controls.";
 $("jensen-example").href = `?mode=${iframe ? "iframe" : "canvas"}&example=jensen-2m`;
 for (const mode of ["canvas", "iframe"]) {
   const link = $(`${mode}-example`);
@@ -36,17 +36,36 @@ function update(state) {
   $("timeline").disabled = !state.playable;
   $("timeline").value = state.time;
   $("timeline").style.setProperty("--progress", `${state.time * 100}%`);
-  $("timecode").textContent = `${state.currentTime.toFixed(1)} / ${state.duration.toFixed(1)} s`;
+  const clock = (seconds) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+  $("timecode").textContent = `${clock(state.currentTime)} / ${clock(state.duration)}`;
+  const rate = $("playback-rate");
+  if (![...rate.options].some((option) => Number(option.value) === state.playbackRate))
+    rate.add(new Option(`${state.playbackRate}×`, String(state.playbackRate)));
+  rate.value = state.playbackRate;
+  rate.disabled = !state.playable || state.status === "loading";
   $("message").textContent = state.error ?? "";
   $("message").dataset.state = state.status;
   const silent = state.audio.muted || state.audio.volume === 0 || state.audio.status === "blocked";
-  $("mute-toggle").hidden = !state.audio.available;
+  $("audio-controls").hidden = !state.audio.available;
   $("mute-toggle").disabled = state.audio.status === "error";
   $("mute-toggle").setAttribute("aria-label", silent ? "Unmute" : "Mute");
   $("mute-toggle").title = silent ? "Unmute" : "Mute";
   $("mute-toggle").setAttribute("aria-pressed", String(state.audio.muted));
   $("audio-icon").setAttribute("href", silent ? "#silent" : "#sound");
 }
+function updateFullscreen() {
+  const full = document.fullscreenElement === $("player-stage");
+  $("fullscreen").setAttribute("aria-label", full ? "Exit fullscreen" : "Fullscreen");
+  $("fullscreen").title = full ? "Exit fullscreen" : "Fullscreen";
+  $("fullscreen-icon").setAttribute("href", full ? "#collapse" : "#expand");
+}
+document.addEventListener("fullscreenchange", updateFullscreen, { signal: download.signal });
+$("fullscreen").onclick = async () => {
+  try {
+    if (document.fullscreenElement === $("player-stage")) await document.exitFullscreen();
+    else await $("player-stage").requestFullscreen();
+  } catch (error) { $("message").textContent = error.message; }
+};
 
 try {
   if (iframe) {
@@ -65,8 +84,13 @@ try {
       maxPoints: exampleId ? Infinity : 1000000,
     });
   }
-  for (const type of ["loaded", "play", "pause", "timeupdate", "audiochange", "error"])
+  for (const type of ["loaded", "play", "pause", "timeupdate", "ratechange", "error"])
     player.addEventListener(type, ({ detail }) => update(detail));
+  player.addEventListener("audiochange", ({ detail }) => {
+    if (detail.audio.status === "blocked" && !detail.audio.muted && detail.playing)
+      void Promise.resolve(player.pause()).then(update).catch((error) => { $("message").textContent = error.message; });
+    else update(detail);
+  });
   $("play-toggle").onclick = async () => {
     try { update(await (player.state.playing ? player.pause() : player.play())); }
     catch (error) { $("message").textContent = error.message; }
@@ -78,11 +102,16 @@ try {
       update(await player.seek(time));
     } catch (error) { $("message").textContent = error.message; }
   };
+  $("playback-rate").onchange = async () => {
+    try { update(await player.setPlaybackRate(Number($("playback-rate").value))); }
+    catch (error) { $("message").textContent = error.message; }
+  };
   $("mute-toggle").onclick = async () => {
     try {
       const audio = player.state.audio;
       if (audio.volume === 0) await player.setVolume(1);
       update(await player.setMuted(audio.status === "blocked" || audio.volume === 0 ? false : !audio.muted));
+      if (audio.status === "blocked") update(await player.play());
     } catch (error) { $("message").textContent = error.message; }
   };
   if (exampleId) {

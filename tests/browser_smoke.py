@@ -196,7 +196,10 @@ def main():
             drop_demo(mobile)
             seek(mobile, 0.3)
             assert mobile.evaluate("document.documentElement.scrollWidth") == 390
-            assert mobile.locator("#canvas").bounding_box()["height"] == 844
+            scene_box = mobile.locator("#canvas").bounding_box()
+            controls_box = mobile.locator("#controls").bounding_box()
+            assert scene_box["height"] > 300
+            assert scene_box["y"] + scene_box["height"] <= controls_box["y"], "Controls cover the scene"
             if args.screenshots:
                 mobile.screenshot(path=args.screenshots / "mobile.png")
             assert not errors, errors

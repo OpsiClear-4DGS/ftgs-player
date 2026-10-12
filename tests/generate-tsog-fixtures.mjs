@@ -1,6 +1,6 @@
 // Optional regeneration only; the player has no dependency on the reference package.
 // Usage: node tests/generate-tsog-fixtures.mjs /path/to/built/xiaomi-research/tsog
-// Pinned reference and licenses: ../TSOG.md, ../THIRD_PARTY.md.
+// Pinned reference and licenses: ../docs/TSOG.md, ../docs/THIRD_PARTY.md.
 import { mkdir, open, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";

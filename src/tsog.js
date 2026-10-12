@@ -1,5 +1,5 @@
 // Repository-owned TSOG v4 decoder, based on Xiaomi Research's format/encoder.
-// Paper, original repository, compatibility notes and licenses: TSOG.md and THIRD_PARTY.md.
+// Paper, original repository, compatibility and licenses: ../docs/TSOG.md and ../docs/THIRD_PARTY.md.
 import { boundsForModel, covarianceFromQuaternion } from "./ftgs.js";
 import { openZip } from "./zip.js";
 import { AttributeImages } from "./webp.js";

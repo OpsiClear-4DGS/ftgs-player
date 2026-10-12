@@ -37,7 +37,7 @@ The reference encoder is distributed under the **Clear BSD License**, copyright
 The base attribute conventions originate in
 [PlayCanvas SOG](https://developer.playcanvas.com/user-manual/gaussian-splatting/formats/sog/)
 and its [MIT-licensed splat-transform](https://github.com/playcanvas/splat-transform).
-Full notices are retained in [THIRD_PARTY.md](../THIRD_PARTY.md); preserve that file
+Full notices are retained in [THIRD_PARTY.md](THIRD_PARTY.md); preserve that file
 when redistributing this module. The player's own code remains under its
 repository license.
 

@@ -140,6 +140,7 @@ def main():
             assert state["sourceCount"] == 2000000 and state["nFrames"] == 121
             assert state["fps"] == 24 and state["duration"] == 5
             assert state["audio"]["available"] and not state["audio"]["error"]
+            assert not state["audio"]["muted"] and state["audio"]["volume"] == 1, "Example audio should default to on"
             assert not page.locator("#welcome").is_visible()
             assert page.locator("#audio-controls").is_visible()
             assert any(path.endswith("/src/sort-worker.js") for path in requests), "Module worker failed under Pages prefix"
@@ -157,6 +158,7 @@ def main():
             if args.screenshots:
                 page.mouse.move(20, 20)
                 page.screenshot(path=args.screenshots / "jensen-2m.png")
+                page.locator("#canvas").screenshot(path=args.screenshots / "scene.png")
             page.locator("#mute-toggle").click()
             assert page.locator("#mute-toggle").get_attribute("aria-pressed") == "true"
             page.locator("#play-toggle").click()
@@ -171,6 +173,16 @@ def main():
                 page.set_viewport_size({"width": width, "height": height})
                 page.wait_for_timeout(200)
                 fits(page)
+                scene = page.locator("#canvas").bounding_box()
+                controls = page.locator("#controls").bounding_box()
+                assert scene["y"] + scene["height"] <= controls["y"], "Dock obscures the scene"
+                if page.locator("#more-controls").is_visible():
+                    page.locator("#more-controls").focus()
+                    page.keyboard.press("Enter")
+                    assert page.locator("#reset-view").is_visible()
+                    page.keyboard.press("Escape")
+                    assert not page.locator("#view-options").is_visible()
+                    assert page.locator("#more-controls").evaluate("el => el === document.activeElement")
                 if args.screenshots and width == 390:
                     page.screenshot(path=args.screenshots / "jensen-mobile.png")
             assert not errors, errors

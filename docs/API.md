@@ -10,6 +10,10 @@ Runnable examples: [canvas](../examples/embedding.html) ·
 The [host example](../examples/embedding.js) imports the public API and binds its own controls. The canvas version does not import standalone UI; the iframe version controls a separate standalone player. Add `&example=jensen-2m` to either URL to load the retained real scene.
 For the child's native toolbar and AR gesture button, use
 [the iframe with native controls](../examples/embedding.html?mode=iframe&ui=player).
+The canvas and iframe host examples include playback speed and a bottom-right
+fullscreen button. Fullscreen expands the scene and its controls together.
+Audio defaults to enabled; the main Play button starts playback with sound.
+Fullscreen is owned by the host DOM container, not a controller method.
 
 ## Canvas API
 
@@ -345,4 +349,4 @@ the report and complete browser example. The schema and validator add no
 runtime dependency to normal playback.
 
 When redistributing the player modules, include the repository license and
-[THIRD_PARTY.md](../THIRD_PARTY.md), which preserves TSOG and PlayCanvas notices.
+[THIRD_PARTY.md](THIRD_PARTY.md), which preserves TSOG and PlayCanvas notices.

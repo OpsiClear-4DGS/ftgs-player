@@ -28,8 +28,6 @@
     "docs/",
     "tsog.schema.json",
     "LICENSE",
-    "THIRD_PARTY.md",
-    "CONTRIBUTING.md",
     "README.md"
   ],
   "sideEffects": ["./src/sort-worker.js"],

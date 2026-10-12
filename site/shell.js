@@ -11,29 +11,30 @@ export function mountPlayerShell(viewer) {
         <symbol id="reset" viewBox="0 0 24 24"><path d="M4.5 10a7.5 7.5 0 1 1 1.7 7M4.5 4.5V10H10" /></symbol>
         <symbol id="expand" viewBox="0 0 24 24"><path d="M8.5 4.5h-4v4m11-4h4v4m-15 7v4h4m11-4v4h-4" /></symbol>
         <symbol id="collapse" viewBox="0 0 24 24"><path d="M4.5 8.5h4v-4m7 0v4h4m-15 7h4v4m7 0v-4h4" /></symbol>
-        <symbol id="add" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
-        <symbol id="code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16" /></symbol>
-        <symbol id="source" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 4v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.3 4.4 4.4 0 0 0-.1-3.3s-1-.3-3.4 1.3a11.4 11.4 0 0 0-6.2 0C6.3 2.4 5.3 2.7 5.3 2.7a4.4 4.4 0 0 0-.1 3.3 4.7 4.7 0 0 0-1.3 3.3c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3V21" /></symbol>
+        <symbol id="more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+        <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" /></symbol>
       </defs>
     </svg>
     <canvas id="canvas" tabindex="0" aria-label="3D scene. Drag to orbit, Shift-drag to pan, scroll to zoom. WASD to move, Q/E down/up, Shift to move faster."></canvas>
     <section id="welcome" class="welcome" aria-labelledby="welcome-title">
       <div class="welcome-heading">
         <h1 id="welcome-title">FTGS Player</h1>
-        <nav id="welcome-links" aria-label="Player resources">
-          <a class="icon-button" href="./examples/embedding.html" aria-label="Embedding examples" title="Embedding examples"><svg aria-hidden="true"><use href="#code" /></svg></a>
-          <a class="icon-button" href="https://github.com/OpsiClear-4DGS/ftgs-player" aria-label="Source code" title="Source code"><svg aria-hidden="true"><use href="#source" /></svg></a>
-        </nav>
+        <p>Open and explore 4D scenes.</p>
       </div>
-      <button id="empty" class="empty" aria-label="Choose a .ftgs.ply or .tsog file">
-        <svg class="empty-icon" aria-hidden="true"><use href="#add" /></svg>
-        <span class="empty-title">Open a 4D scene</span>
-        <span class="empty-caption">Drop a .tsog or .ftgs.ply file, or click to browse</span>
-      </button>
-      <div class="welcome-actions">
-        <a class="button example-link" href="?example=jensen-2m"><svg aria-hidden="true"><use href="#play" /></svg>Try Jensen <span>2M · 45 MB</span></a>
-        <a class="license-link" href="./LICENSE">AGPL-3.0</a>
+      <div class="welcome-choices">
+        <button id="empty" class="empty" aria-label="Choose a .ftgs.ply or .tsog file">
+          <svg class="empty-icon" aria-hidden="true"><use href="#open" /></svg>
+          <span class="empty-title">Open a scene</span>
+          <span class="empty-caption">Drag a file here</span>
+          <span class="choose-file">Choose file</span>
+          <span class="file-types">.tsog · .ftgs.ply</span>
+        </button>
+        <a class="example-link" href="?example=jensen-2m" aria-label="Play example scene">
+          <span class="example-preview"><img src="./site/assets/example.png" alt="" /><span class="preview-play"><svg aria-hidden="true"><use href="#play" /></svg></span></span>
+          <span class="example-description"><span><span class="example-title">Play example</span><span class="example-caption">5 seconds · audio · 45 MB</span></span><svg class="example-arrow" aria-hidden="true"><use href="#arrow" /></svg></span>
+        </a>
       </div>
+      <div class="welcome-footer"><span>Local files stay in your browser.</span><nav id="welcome-links" aria-label="Player resources"><a href="./examples/embedding.html">Embedding</a><a href="https://github.com/OpsiClear-4DGS/ftgs-player">Source</a></nav></div>
     </section>
     <input id="file" type="file" accept=".ply,.tsog" hidden aria-label="Open splat file" />
     <div id="message" class="message" role="status" hidden><span id="message-text"></span><button id="retry-example" class="button" hidden>Retry</button></div>
@@ -42,38 +43,42 @@ export function mountPlayerShell(viewer) {
       <svg aria-hidden="true"><use href="#open" /></svg><span>Drop to play</span>
     </div>
     <div id="controls" class="controls" role="group" aria-label="Playback controls" hidden>
-      <div id="timeline-area" class="timeline-area">
-        <output id="seek-preview" class="seek-preview" aria-hidden="true">0:00</output>
-        <input id="timeline" type="range" min="0" max="1" step="0.0001" value="0" aria-label="Timeline" disabled />
-      </div>
       <div class="transport">
         <button id="play-toggle" class="icon-button" data-tooltip="Play (Space)" aria-label="Play" disabled>
           <svg class="solid-icon" aria-hidden="true"><use id="play-icon" href="#play" /></svg>
         </button>
+        <div id="timeline-area" class="timeline-area">
+          <output id="seek-preview" class="seek-preview" aria-hidden="true">0:00</output>
+          <input id="timeline" type="range" min="0" max="1" step="0.0001" value="0" aria-label="Timeline" disabled />
+        </div>
+        <output id="timecode" aria-label="Playback time" aria-live="off">0:00 <span>/ 0:00</span></output>
         <div id="audio-controls" class="audio-controls" hidden>
           <button id="mute-toggle" class="icon-button" data-tooltip="Mute (M)" aria-label="Mute" aria-pressed="false">
             <svg aria-hidden="true"><use id="audio-icon" href="#sound" /></svg>
           </button>
           <input id="volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume" />
         </div>
-        <output id="timecode" aria-label="Playback time" aria-live="off">0:00 <span>/ 0:00</span></output>
-        <span class="transport-space"></span>
-        <select id="playback-rate" class="playback-rate" aria-label="Playback speed" title="Playback speed" disabled>
+        <div class="utility-actions">
+          <select id="playback-rate" class="playback-rate" aria-label="Playback speed" title="Playback speed" disabled>
           <option value="0.25">0.25×</option><option value="0.5">0.5×</option>
           <option value="0.75">0.75×</option><option value="1" selected>1×</option>
           <option value="1.25">1.25×</option><option value="1.5">1.5×</option>
           <option value="2">2×</option><option value="3">3×</option><option value="4">4×</option>
-        </select>
+          </select>
+          <div id="view-options" class="secondary-actions" role="group" aria-label="View options">
         <button id="reset-view" class="icon-button" data-tooltip="Reset view (R)" aria-label="Reset view" disabled>
-          <svg aria-hidden="true"><use href="#reset" /></svg>
+          <svg aria-hidden="true"><use href="#reset" /></svg><span class="menu-label">Reset view</span>
         </button>
         <button id="open-file" class="icon-button" data-tooltip="Open file (O)" aria-label="Open file">
-          <svg aria-hidden="true"><use href="#open" /></svg>
+          <svg aria-hidden="true"><use href="#open" /></svg><span class="menu-label">Open file</span>
         </button>
+          </div>
+          <button id="more-controls" class="icon-button" aria-label="More options" aria-expanded="false" aria-controls="view-options" hidden><svg aria-hidden="true"><use href="#more" /></svg></button>
         <button id="ar" class="icon-button ar-button" data-tooltip="View in AR" aria-label="View in AR" aria-pressed="false" disabled hidden>AR</button>
         <button id="fullscreen" class="icon-button" data-tooltip="Fullscreen (F)" aria-label="Fullscreen">
           <svg aria-hidden="true"><use id="fullscreen-icon" href="#expand" /></svg>
         </button>
+        </div>
       </div>
     </div>`;
 }

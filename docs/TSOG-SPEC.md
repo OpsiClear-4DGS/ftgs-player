@@ -497,7 +497,7 @@ and MIT-licensed [splat-transform](https://github.com/playcanvas/splat-transform
 WebP is defined by Google's [lossless bitstream specification](https://developers.google.com/speed/webp/docs/webp_lossless_bitstream_specification).
 The schema dialect is [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12).
 The specification and repository-owned code use the repository license; full
-upstream license notices remain in [THIRD_PARTY.md](../THIRD_PARTY.md).
+upstream license notices remain in [THIRD_PARTY.md](THIRD_PARTY.md).
 
 ## Revision history
 

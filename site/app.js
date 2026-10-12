@@ -1,7 +1,7 @@
 import { FTGSPlayer } from "../src/player.js";
 import { attachPlayerBridge } from "./bridge.js";
 import { demoFile } from "./demo.js";
-import { mountPlayerShell } from "./shell.js?v=2";
+import { mountPlayerShell } from "./shell.js?v=3";
 import { readExample, downloadExample } from "./examples.js?v=2";
 
 mountPlayerShell(document.getElementById("viewer"));
@@ -24,7 +24,8 @@ const requestedVolume = Number(query.get("volume"));
 const showControls = query.get("controls") !== "0";
 const events = new AbortController();
 const options = { signal: events.signal };
-let player, detachBridge, idleTimer, messageTimer, exampleDownload;
+let player, detachBridge, idleTimer, messageTimer, exampleDownload, controlsResize;
+let menuOpen = false;
 let arSupported = false;
 let up = query.get("up") === "z" ? "z" : "y";
 
@@ -109,6 +110,7 @@ function updateAudio(state) {
   const audio = state.audio;
   $("audio-controls").hidden = !audio.available;
   const blocked = audio.status === "blocked";
+  if (blocked && !audio.muted && player.playing && showControls) player.pause();
   const silent =
     audio.muted || audio.volume === 0 || blocked || audio.status === "error";
   const label =
@@ -190,6 +192,13 @@ async function load(input, loadOptions) {
     /* The player's error event displays failures; cancelled loads stay silent. */
   }
 }
+function updateViewOptions(open = false) {
+  const compact = ($("controls").clientWidth || innerWidth - 48) <= 720;
+  menuOpen = compact && open;
+  $("view-options").hidden = compact && !menuOpen;
+  $("more-controls").hidden = !compact;
+  $("more-controls").setAttribute("aria-expanded", String(menuOpen));
+}
 async function openExample(id) {
   exampleDownload?.abort();
   const controller = new AbortController();
@@ -222,6 +231,7 @@ async function openExample(id) {
   }
 }
 function teardown() {
+  controlsResize?.disconnect();
   exampleDownload?.abort();
   events.abort();
   clearTimeout(idleTimer);
@@ -254,6 +264,9 @@ try {
         : null,
     muted: query.get("muted") === "1",
   });
+  controlsResize = new ResizeObserver(() => updateViewOptions());
+  controlsResize.observe($("controls"));
+  updateViewOptions();
   player.addEventListener(
     "loadstart",
     ({ detail }) => {
@@ -289,6 +302,7 @@ try {
       );
       $("viewer").dataset.loaded = "true";
       $("controls").hidden = !showControls;
+      updateViewOptions();
       $("play-toggle").disabled = !detail.playable;
       $("timeline").disabled = !detail.playable;
       $("reset-view").disabled = false;
@@ -310,6 +324,7 @@ try {
     "error",
     ({ detail }) => {
       $("controls").hidden = !showControls;
+      updateViewOptions();
       $("play-toggle").disabled = $("timeline").disabled = !detail.playable;
       $("reset-view").disabled = !detail.loaded;
       status(detail.error, "error");
@@ -361,6 +376,7 @@ try {
       player.setMuted(
         audio.status === "blocked" || audio.volume === 0 ? false : !audio.muted,
       );
+      if (audio.status === "blocked") player.play();
     },
     options,
   );
@@ -405,6 +421,21 @@ try {
   for (const id of ["empty", "open-file"])
     $(id).addEventListener("click", () => $("file").click(), options);
   $("retry-example").addEventListener("click", () => void openExample(exampleId), options);
+  $("more-controls").addEventListener("click", (event) => {
+    updateViewOptions(!menuOpen);
+    if (menuOpen && event.detail === 0) $("view-options").querySelector("button:not(:disabled)")?.focus();
+  }, options);
+  document.addEventListener("pointerdown", (event) => {
+    if (menuOpen && !$("view-options").contains(event.target) && !$("more-controls").contains(event.target))
+      updateViewOptions();
+  }, options);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menuOpen) {
+      event.preventDefault();
+      updateViewOptions();
+      $("more-controls").focus();
+    }
+  }, options);
   $("file").addEventListener(
     "change",
     () => {
@@ -488,6 +519,10 @@ try {
     "click",
     (event) => {
       if (event.detail > 0) event.target.closest("button")?.blur();
+      if (event.target.closest("#view-options button")) {
+        updateViewOptions();
+        if (event.detail === 0 && !$("more-controls").hidden) $("more-controls").focus();
+      }
     },
     options,
   );

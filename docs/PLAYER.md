@@ -228,7 +228,7 @@ for the layout, timing assumptions and limits, and for the citation to
 [Gmira et al.'s TSOG paper](https://arxiv.org/abs/2607.28049) and
 [Xiaomi Research's original repository](https://github.com/xiaomi-research/tsog).
 The original Clear BSD and PlayCanvas MIT license notices are retained in
-[THIRD_PARTY.md](../THIRD_PARTY.md).
+[THIRD_PARTY.md](THIRD_PARTY.md).
 
 The default point limit is **1 million**, sampled evenly throughout the file.
 A brief loading notice reports when sampling is active. URL options keep the

@@ -100,12 +100,16 @@ def main():
             page.keyboard.press("m")
             assert page.evaluate("audioElements[0].muted")
             page.set_viewport_size({"width": 320, "height": 600})
+            page.locator("#more-controls:not([hidden])").wait_for()
             page.evaluate("document.querySelector('#ar').hidden = false")
             boxes = page.locator(".transport > :not([hidden])").evaluate_all("""els => els
               .filter(e => getComputedStyle(e).display !== 'none')
-              .map(e => ({id:e.id, left:e.getBoundingClientRect().left, right:e.getBoundingClientRect().right}))""")
+              .map(e => ({id:e.id, left:e.getBoundingClientRect().left, right:e.getBoundingClientRect().right,
+                top:e.getBoundingClientRect().top, bottom:e.getBoundingClientRect().bottom}))""")
             assert all(b["left"] >= 0 and b["right"] <= 320 for b in boxes), boxes
-            assert all(a["right"] <= b["left"] + 1 for a, b in zip(boxes, boxes[1:])), boxes
+            for i, a in enumerate(boxes):
+                for b in boxes[i + 1:]:
+                    assert min(a["right"], b["right"]) <= max(a["left"], b["left"]) + 1 or min(a["bottom"], b["bottom"]) <= max(a["top"], b["top"]) + 1, boxes
 
             # Canvas API: real media clock, rate, seek, final stop, replay, URL cleanup.
             page.goto(url + "host.html")

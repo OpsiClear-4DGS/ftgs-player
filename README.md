@@ -6,14 +6,14 @@ and a small standalone website. Rendering uses WebGL2 and a sorting worker;
 there are no runtime dependencies.
 
 **[Open the player](https://opsiclear-4dgs.github.io/ftgs-player/)** ·
-**[Play Jensen · 2M](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)** ·
+**[Play example](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)** ·
 [Canvas example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html) ·
 [Iframe example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=iframe)
 
 [![Jensen 2M scene playing in the FTGS Player](docs/assets/jensen-2m.png)](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)
 
 Drop a file onto the page, or use the folder button. Local files stay in your
-browser. Playback supports seeking, speed control, embedded audio, orbit/pan/zoom,
+browser. Playback supports seeking, speed control, embedded audio, fullscreen, orbit/pan/zoom,
 and WebXR AR on supported devices. The Jensen example loads all 2M Gaussians,
 uses its saved camera, and includes audio in a 45.1 MB TSOG. It downloads only
 when selected, using small byte-range requests with download progress and bounded
@@ -22,6 +22,9 @@ retries. [Example provenance and download](examples/assets/README.md).
 The website follows [COLMAPView's design system](https://colmapview.github.io/):
 neutral dark panels, silver accents and compact icon controls.
 [Theme and layout notes](docs/DESIGN.md).
+The embedding examples include speed and fullscreen controls at the bottom
+right. Audio starts enabled; when the browser blocks autoplay with sound,
+press Play to start both the scene and its audio.
 
 ## Reuse the player
 
@@ -81,10 +84,14 @@ React component lifecycle examples.
 src/              Reusable player, decoders, renderer and sorting worker
 site/             Standalone UI, styles, iframe bridge and synthetic demo
 examples/         Canvas/iframe hosts and the retained Jensen 2M result
-docs/             API, formats, playback guide and TSOG specification
-tests/            Unit/browser checks and small synthetic conformance fixtures
+docs/             Guides, specification, development instructions and license notices
+tests/            Unit/browser checks, fixtures and Python test requirements
 tools/            Static-site build and TSOG packaging/validation CLIs
 ```
+
+The root contains the README, license, package definition, website entry and
+stable browser module entry points. Documentation lives in `docs/`; the
+published schema stays at `tsog.schema.json` so existing schema URLs keep working.
 
 ## Develop and deploy
 
@@ -110,7 +117,7 @@ without the 45 MB scene. No generated files are committed.
 
 GitHub Pages currently deploys `main` at the repository root. The same relative
 URLs work at `/ftgs-player/`, the local root, and the built `dist/` deployment.
-[Contributing](CONTRIBUTING.md) covers browser checks and release validation.
+[Contributing](docs/CONTRIBUTING.md) covers browser checks and release validation.
 
 ## Documentation and license
 
@@ -121,6 +128,6 @@ URLs work at `/ftgs-player/`, the local root, and the built `dist/` deployment.
 
 Code is **AGPL-3.0-only**, originating from the player in
 [FreeTimeGsVanilla](https://github.com/OpsiClear-4DGS/FreeTimeGsVanilla).
-Retain [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY.md) when reusing
+Retain [LICENSE](LICENSE) and [third-party notices](docs/THIRD_PARTY.md) when reusing
 or distributing the library. The recorded example's source media and audio
 retain their original rights, described with its provenance.
