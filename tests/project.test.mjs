@@ -22,7 +22,7 @@ test("reusable package includes its worker and licenses, and excludes recorded d
   });
   const pack = JSON.parse(stdout)[0];
   const paths = new Set(pack.files.map((file) => file.path));
-  for (const path of ["src/index.js", "src/player.js", "src/embed.js", "src/sort-worker.js",
+  for (const path of ["src/index.js", "src/player.js", "src/embed.js", "src/sort-worker.js", "src/decode-worker.js",
                       "src/tsog.js", "src/webp.js", "LICENSE", "docs/THIRD_PARTY.md", "docs/API.md"])
     assert.ok(paths.has(path), `missing ${path}`);
   assert.ok(![...paths].some((path) => /^(examples|tests|site|dist)\//.test(path)));

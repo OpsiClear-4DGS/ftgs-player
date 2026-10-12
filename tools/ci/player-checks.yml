@@ -26,6 +26,7 @@ jobs:
       - run: python tests/browser_smoke.py
       - run: python tests/browser_api.py
       - run: python tests/browser_tsog.py
+      - run: python tests/browser_workers.py
       - run: python tests/browser_audio.py
       - run: python tests/browser_xr.py
       - run: python tests/browser_sandbox.py

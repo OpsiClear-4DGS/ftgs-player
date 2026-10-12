@@ -2,8 +2,9 @@
 
 The reusable API lives in `src/`; it must not import website markup or styles
 from `site/`. Keep the root `player.js`, `embed.js` and `index.js` entry points
-working for existing browser integrations. `src/sort-worker.js` must remain
-available beside its imported sorting module in packages and static builds.
+working for existing browser integrations. `src/sort-worker.js` and
+`src/decode-worker.js` must remain available with their imported modules in
+packages and static builds.
 
 Run the unit, package and retained-example checks with Node.js 22+:
 
@@ -22,6 +23,7 @@ python -m playwright install chromium
 python tests/browser_smoke.py
 python tests/browser_api.py
 python tests/browser_tsog.py
+python tests/browser_workers.py
 python tests/browser_audio.py
 python tests/browser_xr.py
 python tests/browser_sandbox.py

@@ -2,7 +2,7 @@
 
 A reusable browser player for animated `.ftgs.ply` and packaged `.tsog` scenes.
 It provides a canvas API for your own UI, an iframe API for the hosted player,
-and a small standalone website. Rendering uses WebGL2 and a sorting worker;
+and a small standalone website. Rendering uses WebGL2 with decoding and sorting workers;
 there are no runtime dependencies.
 
 **[Open the player](https://opsiclear-4dgs.github.io/ftgs-player/)** ·
@@ -20,7 +20,9 @@ when selected, using small byte-range requests with download progress and bounde
 retries. [Example provenance and download](examples/assets/README.md).
 
 TSOG loading preserves shared color palettes, reuses covariance buffers and
-decodes large batches with time-budgeted yields. It keeps every Gaussian and
+decodes large batches off the UI thread when worker graphics are available.
+Sorting skips temporally invisible points using conservative bounds and reuses
+scratch buffers. It keeps every Gaussian and
 color coefficient. [Loading benchmarks and quality checks](docs/PERFORMANCE.md).
 
 The website follows [COLMAPView's design system](https://colmapview.github.io/):
@@ -57,7 +59,7 @@ Your host owns the UI; the player owns rendering, camera interaction and playbac
 
 For a build-free application, copy `src/` with its relative paths intact and
 import `src/index.js`. The root `index.js`, `player.js` and `embed.js` remain
-stable browser entry points. Self-host canvas modules so the sorting worker
+stable browser entry points. Self-host canvas modules so both module workers
 loads from the application's origin; bundlers must preserve the module worker.
 The npm package includes the source, worker, schema and license notices and
 excludes website UI, tests and recorded example data.

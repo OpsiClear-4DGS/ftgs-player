@@ -30,7 +30,7 @@
     "LICENSE",
     "README.md"
   ],
-  "sideEffects": ["./src/sort-worker.js"],
+  "sideEffects": ["./src/sort-worker.js", "./src/decode-worker.js"],
   "engines": { "node": ">=22" },
   "keywords": ["tsog", "freetimegs", "4dgs", "gaussian-splatting", "webgl2", "webxr"],
   "scripts": {
