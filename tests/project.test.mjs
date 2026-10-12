@@ -29,7 +29,7 @@ test("reusable package includes its worker and licenses, and excludes recorded d
   assert.ok(pack.size < 1024 * 1024, "package unexpectedly includes model data");
 });
 
-test("retained Jensen example matches its provenance and preserves 2M rows and audio", async () => {
+test("version-1 Slop Example matches its provenance and preserves 2M rows and audio", async () => {
   const folder = new URL("../examples/assets/", import.meta.url);
   const metadata = JSON.parse(await readFile(new URL("jensen-2m.json", folder)));
   const data = await readFile(new URL(metadata.file, folder));
@@ -37,6 +37,8 @@ test("retained Jensen example matches its provenance and preserves 2M rows and a
   assert.equal(createHash("sha256").update(data).digest("hex"), metadata.sha256);
   const archive = await openZip(new Blob([data]));
   const model = JSON.parse(new TextDecoder().decode(await archive.read("meta.json")));
+  assert.equal(model.version, 1);
+  assert.deepEqual(model.profile, { id: "org.opsiclear.tsog-playback", version: 1 });
   assert.equal(model.count, 2000000);
   assert.equal(model.playback.fps, metadata.fps);
   assert.equal(model.playback.duration, metadata.duration);
