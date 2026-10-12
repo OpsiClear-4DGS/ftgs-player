@@ -6,15 +6,15 @@ and a small standalone website. Rendering uses WebGL2 with decoding and sorting 
 there are no runtime dependencies.
 
 **[Open the player](https://opsiclear-4dgs.github.io/ftgs-player/)** ·
-**[Play example](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html)** ·
+**[Slop Example](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html)** ·
 [Canvas example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html) ·
 [Iframe example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=iframe)
 
-[![Jensen 2M scene playing in the FTGS Player](docs/assets/jensen-2m.png)](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)
+[![Slop Example playing in the FTGS Player](docs/assets/jensen-2m.png)](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m)
 
 Drop a file onto the page, or use the folder button. Local files stay in your
 browser. Playback supports seeking, speed control, embedded audio, fullscreen, orbit/pan/zoom,
-and WebXR AR on supported devices. The Jensen example loads all 2M Gaussians,
+and WebXR AR on supported devices. Slop Example loads all 2M Gaussians,
 uses its saved camera, and includes audio in a 45.1 MB TSOG. It downloads only
 when selected, using small byte-range requests with download progress and bounded
 retries. [Example provenance and download](examples/assets/README.md).
@@ -80,7 +80,7 @@ await player.play();
 // Call player.destroy() to unload the child and remove listeners.
 ```
 
-A plain iframe can instead use the [Jensen demo URL](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m).
+A plain iframe can instead use the [Slop Example URL](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m).
 The [iframe example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=iframe)
 shows a complete HTML embed below the player, with a Copy code button. Use the
 [canvas example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=canvas)
@@ -91,7 +91,7 @@ React component lifecycle examples.
 
 ## Share on X
 
-Share the [Jensen scene page](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html).
+Share the [Slop Example scene page](https://opsiclear-4dgs.github.io/ftgs-player/examples/jensen-2m.html).
 It includes static `summary_large_image` and Open Graph tags with a 1200×675
 thumbnail and its own canonical URL. Clicking the image link opens the full
 interactive scene, paused with audio enabled; press Play to start playback.
@@ -114,7 +114,7 @@ permission to validate the child origin. Scene pages use their built-in controls
 ```text
 src/              Reusable player, decoders, renderer and sorting worker
 site/             Standalone UI, styles, iframe bridge and synthetic demo
-examples/         Canvas/iframe hosts and the retained Jensen 2M result
+examples/         Canvas/iframe hosts and the retained Slop Example result
 docs/             Guides, specification, development instructions and license notices
 tests/            Unit/browser checks, fixtures and Python test requirements
 tools/            Static-site build and TSOG packaging/validation CLIs
