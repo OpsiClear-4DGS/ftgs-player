@@ -159,6 +159,8 @@ URLs work at `/ftgs-player/`, the local root, and the built `dist/` deployment.
 
 Code is **AGPL-3.0-only**, originating from the player in
 [FreeTimeGsVanilla](https://github.com/OpsiClear-4DGS/FreeTimeGsVanilla).
+The independent [TSOG format project](https://github.com/OpsiClear-4DGS/tsog)
+maintains the Apache-2.0 file specification, schema and optimized codec examples.
 Retain [LICENSE](LICENSE) and [third-party notices](docs/THIRD_PARTY.md) when reusing
 or distributing the library. The recorded example's source media and audio
 retain their original rights, described with its provenance.
