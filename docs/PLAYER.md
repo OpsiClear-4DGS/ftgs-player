@@ -9,8 +9,8 @@ site without runtime dependencies.
 
 Drop a `.ftgs.ply` or `.tsog` onto the page, or click to choose a file.
 Playback starts automatically and uses the file's speed and loop defaults when
-provided. The scene fills the window, with a full-width timeline and playback
-controls along the bottom. The controls fade during playback and
+provided. The scene fills the window, with a compact, borderless timeline and
+playback controls below it. The controls fade during playback and
 return on movement or touch. Hover over the timeline to preview a time; use the
 folder button to open another file. Local files stay in the browser.
 
@@ -36,8 +36,9 @@ to keep a track while changing defaults, or use `--remove-audio` to remove it.
 Existing output files are never overwritten. This command updates an existing
 TSOG version-4 package; it does not convert a `.ftgs.ply` into TSOG.
 
-If audible autoplay is blocked, the scene continues and the sound button shows
-**Enable audio**. Click it or press M to start sound at the current scene time.
+Audio starts enabled. If audible autoplay is blocked, the website pauses the
+scene. Press **Play** to start the scene and its audio together, or use
+**Enable audio** (M).
 Audio format support depends on the browser; a codec error leaves the scene
 playable. A short soundtrack leaves silence at the end, and a longer one stops
 at the end of the scene. Audio pauses with a hidden desktop tab or lost XR tracking.

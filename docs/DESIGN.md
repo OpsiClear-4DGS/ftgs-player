@@ -6,14 +6,17 @@ and [style reference](https://github.com/ColmapView/Colmapview.github.io/blob/ma
 The shared tokens live in `site/theme.css`: neutral charcoal surfaces, silver
 accents, a 4 px spacing scale, restrained borders and 4–8 px corner radii.
 
-The opening screen offers a file drop area and a preview card labelled
-"Play example". Supporting links sit below those choices. During playback,
-the scene occupies its own area above the playback dock, so controls never
+The opening screen is one compact panel: a single "Open scene" file drop area,
+a small example row labelled "Play example", and quiet resource links in the
+panel heading. During playback, the scene occupies its own area above the
+playback dock, so controls never
 cover its content. Very tall viewports use a portrait canvas with space above
 and below, keeping the scene's horizontal framing useful on phones.
 
-The dock uses one row on wide screens and two on narrow containers. Secondary
-view actions move into a keyboard-accessible menu. Play, time, audio, speed
+The borderless dock uses one row on wide screens and two on narrow containers.
+Play and pause are plain icons with a subtle surface on hover or keyboard focus,
+and 44 px hit areas. Secondary view actions move into a keyboard-accessible
+menu. Play, time, audio, speed
 and fullscreen remain available; fullscreen is the last control at the bottom
 right. Controls fade while playing and stay visible on hover or keyboard focus.
 There is no persistent title bar or sidebar.

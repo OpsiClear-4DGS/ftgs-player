@@ -12,29 +12,27 @@ export function mountPlayerShell(viewer) {
         <symbol id="expand" viewBox="0 0 24 24"><path d="M8.5 4.5h-4v4m11-4h4v4m-15 7v4h4m11-4v4h-4" /></symbol>
         <symbol id="collapse" viewBox="0 0 24 24"><path d="M4.5 8.5h4v-4m7 0v4h4m-15 7h4v4m7 0v-4h4" /></symbol>
         <symbol id="more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
-        <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" /></symbol>
       </defs>
     </svg>
     <canvas id="canvas" tabindex="0" aria-label="3D scene. Drag to orbit, Shift-drag to pan, scroll to zoom. WASD to move, Q/E down/up, Shift to move faster."></canvas>
     <section id="welcome" class="welcome" aria-labelledby="welcome-title">
       <div class="welcome-heading">
         <h1 id="welcome-title">FTGS Player</h1>
-        <p>Open and explore 4D scenes.</p>
+        <nav id="welcome-links" aria-label="Player resources"><a href="./examples/embedding.html">Embedding</a><a href="https://github.com/OpsiClear-4DGS/ftgs-player">Source</a></nav>
       </div>
       <div class="welcome-choices">
         <button id="empty" class="empty" aria-label="Choose a .ftgs.ply or .tsog file">
           <svg class="empty-icon" aria-hidden="true"><use href="#open" /></svg>
-          <span class="empty-title">Open a scene</span>
-          <span class="empty-caption">Drag a file here</span>
-          <span class="choose-file">Choose file</span>
-          <span class="file-types">.tsog · .ftgs.ply</span>
+          <span class="empty-title">Open scene</span>
+          <span class="empty-caption">or drop a .tsog or .ftgs.ply file</span>
         </button>
         <a class="example-link" href="?example=jensen-2m" aria-label="Play example scene">
-          <span class="example-preview"><img src="./site/assets/example.png" alt="" /><span class="preview-play"><svg aria-hidden="true"><use href="#play" /></svg></span></span>
-          <span class="example-description"><span><span class="example-title">Play example</span><span class="example-caption">5 seconds · audio · 45 MB</span></span><svg class="example-arrow" aria-hidden="true"><use href="#arrow" /></svg></span>
+          <span class="example-preview"><img src="./site/assets/example.png" alt="" /></span>
+          <span class="example-description"><span class="example-title">Play example</span><span class="example-caption">5 seconds · audio · 45 MB</span></span>
+          <span class="preview-play"><svg aria-hidden="true"><use href="#play" /></svg></span>
         </a>
       </div>
-      <div class="welcome-footer"><span>Local files stay in your browser.</span><nav id="welcome-links" aria-label="Player resources"><a href="./examples/embedding.html">Embedding</a><a href="https://github.com/OpsiClear-4DGS/ftgs-player">Source</a></nav></div>
+      <p class="welcome-footer">Local files stay in your browser.</p>
     </section>
     <input id="file" type="file" accept=".ply,.tsog" hidden aria-label="Open splat file" />
     <div id="message" class="message" role="status" hidden><span id="message-text"></span><button id="retry-example" class="button" hidden>Retry</button></div>

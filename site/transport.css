@@ -1,5 +1,5 @@
 /* Opt-in website controls, shared by the standalone and example hosts. */
-.transport { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.transport { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .icon-button {
   position: relative;
   display: grid;
@@ -19,7 +19,8 @@
 .icon-button:active { background: var(--accent-dim); }
 .icon-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .icon-button .solid-icon { fill: currentColor; stroke: none; }
-#play-toggle { flex-basis: 44px; width: 44px; height: 44px; color: var(--text-primary); background: var(--bg-tertiary); border: 1px solid var(--border-light); }
+#play-toggle { flex-basis: 44px; width: 44px; height: 44px; color: var(--text-primary); }
+#play-toggle svg { width: 22px; height: 22px; }
 .timeline-area { position: relative; flex: 1; min-width: 60px; height: 44px; display: flex; align-items: center; }
 #timeline {
   --progress: 0%;
@@ -43,11 +44,11 @@
 .seek-preview { position: absolute; bottom: 44px; left: var(--preview, 0%); transform: translateX(-50%); padding: 4px 8px; border: 1px solid var(--border-light); border-radius: var(--radius); background: var(--bg-elevated); font-size: 12px; opacity: 0; pointer-events: none; }
 .timeline-area[data-preview] .seek-preview { opacity: 1; }
 #timecode { flex: 0 0 auto; color: var(--text-secondary); font-size: 12px; white-space: nowrap; }
-#timecode span { color: var(--text-muted); }
+#timecode span { margin-left: 6px; color: var(--text-muted); }
 .audio-controls { position: relative; display: flex; align-items: center; }
 #volume { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 96px; margin: 0; padding: 12px; border: 1px solid var(--border-light); border-radius: var(--radius-md); opacity: 0; accent-color: var(--accent); background: var(--bg-elevated); pointer-events: none; }
 .audio-controls:hover #volume, .audio-controls:focus-within #volume { opacity: 1; pointer-events: auto; }
-.utility-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; padding-left: 8px; border-left: 1px solid var(--border-color); }
+.utility-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; }
 .playback-rate { width: 64px; height: 40px; padding: 0 6px; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; }
 .playback-rate:hover { color: var(--text-primary); background: var(--bg-hover); }
 .playback-rate option { background: var(--bg-elevated); }
