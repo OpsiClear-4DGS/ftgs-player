@@ -23,8 +23,9 @@ The website follows [COLMAPView's design system](https://colmapview.github.io/):
 neutral dark panels, silver accents and compact icon controls.
 [Theme and layout notes](docs/DESIGN.md).
 The embedding examples include speed and fullscreen controls at the bottom
-right. Audio starts enabled; when the browser blocks autoplay with sound,
-press Play to start both the scene and its audio.
+right and copyable integration code beneath the player. The code follows the
+selected Canvas or Iframe mode. Audio starts enabled; when the browser blocks
+autoplay with sound, press Play to start both the scene and its audio.
 
 ## Reuse the player
 
@@ -74,9 +75,27 @@ await player.play();
 ```
 
 A plain iframe can instead use the [Jensen demo URL](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m).
+The [iframe example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=iframe)
+shows a complete HTML embed below the player, with a Copy code button. Use the
+[canvas example](https://opsiclear-4dgs.github.io/ftgs-player/examples/embedding.html?mode=canvas)
+for a JavaScript integration with modules served from your own project.
 Cross-origin model hosts must allow CORS. See the [full API reference](docs/API.md)
 for events, camera bookmarks, independent instances, cancellation, audio and
 React component lifecycle examples.
+
+## Share on X
+
+The player and embedding-example pages include static X Player Card and Open
+Graph tags, credited to **@Yeheliu**, with a 1200×675 preview picture and a
+[five-second video preview](examples/social-player.html). The card offers a
+960×540 H.264/AAC MP4 with the original example audio; the shared page opens the
+interactive 4D player. The preview page starts paused with sound enabled.
+
+These tags follow [X's official Player Card example](https://github.com/xdevplatform/cards-player-samples).
+X controls whether a post shows inline playback or an image/link preview.
+The static card always uses the retained Jensen example, including when a URL
+selects Canvas or Iframe mode. Metadata and assets can be checked in a browser;
+actual card rendering must be checked on X. [Preview provenance and regeneration](examples/assets/README.md#social-preview).
 
 ## Project layout
 
