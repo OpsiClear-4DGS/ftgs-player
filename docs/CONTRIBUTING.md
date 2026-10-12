@@ -24,6 +24,7 @@ python tests/browser_api.py
 python tests/browser_tsog.py
 python tests/browser_audio.py
 python tests/browser_xr.py
+python tests/browser_sandbox.py
 python tests/browser_project.py
 python tests/browser_project.py --network-failures
 ```
@@ -35,6 +36,9 @@ prefix and the real Jensen example with all 2M points, audio, playback and
 scrubbing. `--network-failures` verifies bounded range requests, automatic
 retries and user recovery after an interrupted download. Pass
 `--browser /path/to/chromium` to use an existing browser.
+`browser_sandbox.py` checks rendering, audio after Play, the built-in controls
+and cleanup in cross-origin and opaque-origin iframes. This verifies browser
+compatibility; X card acceptance requires a real post and testing in X clients.
 Actual device AR support and performance still need physical-device testing.
 
 Keep synthetic fixtures reproducible; do not replace them with a training

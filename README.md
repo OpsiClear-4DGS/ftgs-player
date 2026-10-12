@@ -87,15 +87,25 @@ React component lifecycle examples.
 
 The player and embedding-example pages include static X Player Card and Open
 Graph tags with a 1200×675 thumbnail. The card's player URL opens the
-[interactive Jensen 2M scene](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m&v=6),
+[interactive Jensen 2M scene](https://opsiclear-4dgs.github.io/ftgs-player/?example=jensen-2m&autoplay=0&v=7),
 with 4DGS playback, camera navigation and the scene's embedded audio. No
-personal account attribution is attached to the card.
+personal account attribution is attached to the card. The card starts paused;
+press Play to start the scene with audio. This avoids audible autoplay, as
+required by [X's card policy](https://docs.x.com/developer-terms/policy#x-cards).
 
 X controls whether the player opens inside its card, its in-app browser or a
 regular browser. The thumbnail and interactive player URL are configured;
 actual behavior must be checked in the X client. Both Canvas and Iframe
 example pages use the same scene thumbnail and player target.
 [Thumbnail provenance](examples/assets/README.md#social-preview).
+
+[Google's interactive 3D card example](https://modelviewer.dev/examples/twitter/generator.html)
+demonstrates this embedding pattern; it does not confirm X accepts cards from
+this domain. The player is tested in ordinary cross-origin iframes and a
+`sandbox="allow-scripts"` iframe. Such a sandbox needs CORS access to the
+modules and model, and permission to create a `data:` module worker. Custom iframe
+controls through `FTGSEmbed` require the usual `allow-same-origin` sandbox
+permission to validate the child origin; the card uses its built-in controls.
 
 ## Project layout
 

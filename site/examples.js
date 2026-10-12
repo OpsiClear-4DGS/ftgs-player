@@ -12,6 +12,13 @@ export async function readExample(id, { signal } = {}) {
   return { ...metadata, source: new URL(metadata.file, metadataURL) };
 }
 
-export function downloadExample(example, options) {
-  return downloadFile(example.source, { ...options, bytes: example.bytes });
+export async function downloadExample(example, options) {
+  // Opaque sandbox origins and remote hosts may hide Content-Range from CORS.
+  // Keep validated ranges for local assets; retry a whole request otherwise.
+  const local = example.source.origin === globalThis.origin;
+  const blob = await downloadFile(example.source, {
+    ...options, bytes: local ? example.bytes : undefined,
+  });
+  if (blob.size !== example.bytes) throw new Error("Incomplete example download.");
+  return blob;
 }

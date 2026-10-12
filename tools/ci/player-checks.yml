@@ -28,5 +28,6 @@ jobs:
       - run: python tests/browser_tsog.py
       - run: python tests/browser_audio.py
       - run: python tests/browser_xr.py
+      - run: python tests/browser_sandbox.py
       - run: python tests/browser_project.py
       - run: python tests/browser_project.py --network-failures
