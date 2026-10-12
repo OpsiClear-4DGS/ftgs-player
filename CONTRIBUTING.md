@@ -25,13 +25,16 @@ python tests/browser_tsog.py
 python tests/browser_audio.py
 python tests/browser_xr.py
 python tests/browser_project.py
+python tests/browser_project.py --network-failures
 ```
 
 The first five checks cover rendering, navigation, canvas/iframe isolation,
 cross-origin commands, cancellation/cleanup, decoder conformance, audio and
 simulated XR. `browser_project.py` verifies the built site under a GitHub Pages
 prefix and the real Jensen example with all 2M points, audio, playback and
-scrubbing. Pass `--browser /path/to/chromium` to use an existing browser.
+scrubbing. `--network-failures` verifies bounded range requests, automatic
+retries and user recovery after an interrupted download. Pass
+`--browser /path/to/chromium` to use an existing browser.
 Actual device AR support and performance still need physical-device testing.
 
 Keep synthetic fixtures reproducible; do not replace them with a training

@@ -1,8 +1,8 @@
 import { FTGSPlayer } from "../src/player.js";
 import { attachPlayerBridge } from "./bridge.js";
 import { demoFile } from "./demo.js";
-import { mountPlayerShell } from "./shell.js";
-import { readExample } from "./examples.js";
+import { mountPlayerShell } from "./shell.js?v=2";
+import { readExample, downloadExample } from "./examples.js?v=2";
 
 mountPlayerShell(document.getElementById("viewer"));
 const $ = (id) => document.getElementById(id);
@@ -24,7 +24,7 @@ const requestedVolume = Number(query.get("volume"));
 const showControls = query.get("controls") !== "0";
 const events = new AbortController();
 const options = { signal: events.signal };
-let player, detachBridge, idleTimer, messageTimer;
+let player, detachBridge, idleTimer, messageTimer, exampleDownload;
 let arSupported = false;
 let up = query.get("up") === "z" ? "z" : "y";
 
@@ -72,8 +72,9 @@ function status(text = "", state = "ready", timeout = 0) {
   $("viewer").dataset.state = state;
   $("viewer").setAttribute("aria-busy", String(state === "loading"));
   $("message").dataset.state = state;
-  $("message").textContent = text;
+  $("message-text").textContent = text;
   $("message").hidden = !text;
+  $("retry-example").hidden = true;
   if (timeout)
     messageTimer = setTimeout(() => {
       $("message").hidden = true;
@@ -180,6 +181,8 @@ async function checkAR() {
 }
 async function load(input, loadOptions) {
   if (!player) return;
+  exampleDownload?.abort();
+  exampleDownload = null;
   try {
     await player.load(input, loadOptions);
     $("canvas").focus({ preventScroll: true });
@@ -187,7 +190,39 @@ async function load(input, loadOptions) {
     /* The player's error event displays failures; cancelled loads stay silent. */
   }
 }
+async function openExample(id) {
+  exampleDownload?.abort();
+  const controller = new AbortController();
+  exampleDownload = controller;
+  player.pause();
+  $("welcome").hidden = true;
+  $("controls").hidden = !showControls;
+  $("play-toggle").disabled = $("timeline").disabled = $("reset-view").disabled = true;
+  status("Downloading example…", "loading");
+  try {
+    const example = await readExample(id, { signal: controller.signal });
+    const blob = await downloadExample(example, {
+      signal: controller.signal,
+      onProgress: (progress) => {
+        if (exampleDownload === controller && !controller.signal.aborted)
+          status(`Downloading · ${Math.round(progress * 100)}%`, "loading");
+      },
+    });
+    if (exampleDownload !== controller) return;
+    exampleDownload = null;
+    await load(blob, {
+      name: example.title,
+      view: query.has("view") ? JSON.parse(query.get("view")) : example.view,
+    });
+  } catch (error) {
+    if (controller.signal.aborted) return;
+    exampleDownload = null;
+    status(error.message, "error");
+    $("retry-example").hidden = false;
+  }
+}
 function teardown() {
+  exampleDownload?.abort();
   events.abort();
   clearTimeout(idleTimer);
   clearTimeout(messageTimer);
@@ -222,6 +257,8 @@ try {
   player.addEventListener(
     "loadstart",
     ({ detail }) => {
+      exampleDownload?.abort();
+      exampleDownload = null;
       $("welcome").hidden = true;
       $("empty").hidden = true;
       $("play-toggle").disabled =
@@ -367,6 +404,7 @@ try {
 
   for (const id of ["empty", "open-file"])
     $(id).addEventListener("click", () => $("file").click(), options);
+  $("retry-example").addEventListener("click", () => void openExample(exampleId), options);
   $("file").addEventListener(
     "change",
     () => {
@@ -549,20 +587,8 @@ try {
     void load(url, {
       view: query.has("view") ? JSON.parse(query.get("view")) : null,
     });
-  else if (exampleId) {
-    try {
-      $("welcome").hidden = true;
-      status("Opening Jensen example…", "loading");
-      const example = await readExample(exampleId);
-      await load(example.source, {
-        name: example.title,
-        view: query.has("view") ? JSON.parse(query.get("view")) : example.view,
-      });
-    } catch (error) {
-      $("controls").hidden = !showControls;
-      status(error.message, "error");
-    }
-  } else if (query.get("demo") === "1" || $("viewer").dataset.demo === "true")
+  else if (exampleId) void openExample(exampleId);
+  else if (query.get("demo") === "1" || $("viewer").dataset.demo === "true")
     void load(demoFile(), { name: "Kinetic ribbon" });
 } catch (error) {
   teardown();

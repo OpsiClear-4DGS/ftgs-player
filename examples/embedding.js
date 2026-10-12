@@ -1,6 +1,6 @@
 import { FTGSPlayer, FTGSEmbed } from "../index.js";
 import { demoFile } from "../site/demo.js";
-import { readExample } from "../site/examples.js";
+import { readExample, downloadExample } from "../site/examples.js?v=2";
 
 const $ = (id) => document.getElementById(id);
 const query = new URLSearchParams(location.search);
@@ -21,6 +21,10 @@ for (const mode of ["canvas", "iframe"]) {
 }
 
 let player;
+const download = new AbortController();
+addEventListener("pagehide", (event) => {
+  if (!event.persisted) { download.abort(); player?.destroy(); }
+});
 function update(state) {
   $("viewer").dataset.state = state.status;
   if (state.loaded) $("viewer").dataset.loaded = "true";
@@ -34,6 +38,7 @@ function update(state) {
   $("timeline").style.setProperty("--progress", `${state.time * 100}%`);
   $("timecode").textContent = `${state.currentTime.toFixed(1)} / ${state.duration.toFixed(1)} s`;
   $("message").textContent = state.error ?? "";
+  $("message").dataset.state = state.status;
   const silent = state.audio.muted || state.audio.volume === 0 || state.audio.status === "blocked";
   $("mute-toggle").hidden = !state.audio.available;
   $("mute-toggle").disabled = state.audio.status === "error";
@@ -81,10 +86,15 @@ try {
     } catch (error) { $("message").textContent = error.message; }
   };
   if (exampleId) {
-    const example = await readExample(exampleId);
-    update(await player.load(example.source, { name: example.title, view: example.view }));
+    $("message").textContent = "Downloading example…";
+    $("message").dataset.state = "loading";
+    const example = await readExample(exampleId, { signal: download.signal });
+    const blob = await downloadExample(example, {
+      signal: download.signal,
+      onProgress: (progress) => { $("message").textContent = `Downloading · ${Math.round(progress * 100)}%`; },
+    });
+    update(await player.load(blob, { name: example.title, view: example.view }));
   } else update(await player.load(demoFile(), { name: "Generated demo" }));
 } catch (error) {
   if (error.name !== "AbortError") $("message").textContent = error.message;
 }
-addEventListener("pagehide", (event) => { if (!event.persisted) player?.destroy(); });

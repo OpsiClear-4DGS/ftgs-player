@@ -16,7 +16,8 @@ Drop a file onto the page, or use the folder button. Local files stay in your
 browser. Playback supports seeking, speed control, embedded audio, orbit/pan/zoom,
 and WebXR AR on supported devices. The Jensen example loads all 2M Gaussians,
 uses its saved camera, and includes audio in a 45.1 MB TSOG. It downloads only
-when selected. [Example provenance and download](examples/assets/README.md).
+when selected, using small byte-range requests with download progress and bounded
+retries. [Example provenance and download](examples/assets/README.md).
 
 The website follows [COLMAPView's design system](https://colmapview.github.io/):
 neutral dark panels, silver accents and compact icon controls.

@@ -6,6 +6,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from io import BytesIO
 from pathlib import Path
 import threading
+import re
 
 from PIL import Image, ImageChops, ImageStat
 from playwright.sync_api import sync_playwright
@@ -15,6 +16,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--browser", help="Existing Chromium executable")
     parser.add_argument("--screenshots", type=Path)
+    parser.add_argument("--network-failures", action="store_true", help="Simulate a blocked large download and interrupted byte ranges")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1] / "dist"
     if not (root / "index.html").exists():
@@ -75,7 +77,32 @@ def main():
             errors = []
             page = browser.new_page(viewport={"width": 1280, "height": 800})
             page.on("pageerror", lambda error: errors.append(str(error)))
-            page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
+            def console(message):
+                if message.type == "error" and not (args.network_failures and "net::ERR_FAILED" in message.text):
+                    errors.append(message.text)
+            page.on("console", console)
+            blocked = True
+            ranges = {}
+            if args.network_failures:
+                model = (root / "examples/assets/jensen-2m.tsog").read_bytes()
+                def scene_request(route):
+                    span = route.request.headers.get("range", "")
+                    match = re.fullmatch(r"bytes=(\d+)-(\d+)", span)
+                    if not match:
+                        errors.append("The player tried one large request instead of byte ranges")
+                        route.abort("failed")
+                        return
+                    start, end = map(int, match.groups())
+                    assert end - start < 4 * 1024 * 1024
+                    ranges[span] = ranges.get(span, 0) + 1
+                    if blocked or (start == 4 * 1024 * 1024 and ranges[span] == 1):
+                        route.abort("failed")
+                        return
+                    route.fulfill(status=206, body=model[start:end + 1], headers={
+                        "Content-Type": "application/octet-stream",
+                        "Content-Range": f"bytes {start}-{end}/{len(model)}",
+                    })
+                page.route("**/jensen-2m.tsog", scene_request)
             # Observe only the public state events, without exposing website internals.
             page.add_init_script("""(() => {
               const dispatch = EventTarget.prototype.dispatchEvent;
@@ -101,6 +128,13 @@ def main():
             if args.screenshots:
                 page.screenshot(path=args.screenshots / "welcome.png")
             page.locator(".example-link").click()
+            if args.network_failures:
+                page.wait_for_function("document.querySelector('#viewer').dataset.state === 'error'")
+                assert "jensen-2m.tsog" in page.locator("#message").inner_text()
+                assert page.locator("#retry-example").is_visible()
+                assert ranges["bytes=0-4194303"] == 3, "Retries were not bounded"
+                blocked = False
+                page.locator("#retry-example").click()
             page.wait_for_function("window.loadedState?.pointCount === 2000000", timeout=120000)
             state = page.evaluate("window.loadedState")
             assert state["sourceCount"] == 2000000 and state["nFrames"] == 121
@@ -109,6 +143,9 @@ def main():
             assert not page.locator("#welcome").is_visible()
             assert page.locator("#audio-controls").is_visible()
             assert any(path.endswith("/src/sort-worker.js") for path in requests), "Module worker failed under Pages prefix"
+            if args.network_failures:
+                assert ranges["bytes=4194304-8388607"] == 2, "Interrupted range was not retried"
+                assert not page.locator("#retry-example").is_visible()
             seek(page, .15)
             early = image(page)
             assert sum(ImageStat.Stat(early).stddev) > 15, "Jensen scene is blank"
@@ -139,6 +176,8 @@ def main():
             assert not errors, errors
             browser.close()
             print("PASS: built Pages paths, opt-in Jensen download, full 2M playback/audio, seeking, pause and responsive controls", flush=True)
+            if args.network_failures:
+                print("PASS: bounded requests, network interruption recovery, failed-asset message and Retry action", flush=True)
     finally:
         server.shutdown()
         server.server_close()

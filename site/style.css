@@ -87,6 +87,7 @@ button { padding: 0; border: 0; color: inherit; background: transparent; }
   animation: spin .85s linear infinite;
 }
 .message[data-state="error"] { color: var(--text-primary); border-color: var(--error); }
+#retry-example { display: flex; margin: var(--sp-3) auto 0; pointer-events: auto; }
 .drop-hint {
   position: absolute;
   inset: var(--sp-4);

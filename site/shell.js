@@ -36,7 +36,7 @@ export function mountPlayerShell(viewer) {
       </div>
     </section>
     <input id="file" type="file" accept=".ply,.tsog" hidden aria-label="Open splat file" />
-    <div id="message" class="message" role="status" hidden></div>
+    <div id="message" class="message" role="status" hidden><span id="message-text"></span><button id="retry-example" class="button" hidden>Retry</button></div>
     <div id="ar-hint" class="message ar-hint" role="status" hidden></div>
     <div id="drop-hint" class="drop-hint" hidden>
       <svg aria-hidden="true"><use href="#open" /></svg><span>Drop to play</span>
