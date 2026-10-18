@@ -33,3 +33,7 @@ for X large-image cards and Open Graph previews and retains the source media's
 original rights. The [scene page](../jensen-2m.html) opens the interactive 4DGS
 web app with the retained TSOG and its embedded audio. WebGL2 and the model download
 are required when opening the interactive scene.
+
+The [legacy video page](../social-player.html) and [MP4](jensen-preview.mp4) are
+retained for cached X Player Cards. The original five-second, 960×540 H.264/AAC
+render includes source audio and retains the source media's rights.

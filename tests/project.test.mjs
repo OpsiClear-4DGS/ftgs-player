@@ -16,6 +16,23 @@ test("package and stable browser entry points share the same controller classes"
   assert.ok(PLAYER_EVENTS.includes("audiochange"));
 });
 
+test("URLs referenced by earlier X Player Cards retain their video and poster", async () => {
+  const page = new URL("../examples/social-player.html", import.meta.url);
+  const html = await readFile(page, "utf8");
+  assert.match(html, /<video\b[^>]*\bcontrols\b/);
+  const source = html.match(/<source\b[^>]*\bsrc="([^"]+)"/)?.[1];
+  assert.equal(source, "./assets/jensen-preview.mp4");
+  assert.match(html, /type="video\/mp4"/);
+  const video = await readFile(new URL(source, page));
+  assert.equal(video.subarray(4, 8).toString(), "ftyp");
+  // Preserve the original preview bytes for consumers of the old URL.
+  assert.equal(createHash("sha256").update(video).digest("hex"),
+    "7a32420012f9a49dc7f2106b31a96e609777dc3288932b00cfdf48503852531c");
+  const poster = html.match(/<video\b[^>]*\bposter="([^"]+)"/)?.[1];
+  assert.equal(poster, "../site/assets/social-preview.jpg");
+  assert.ok((await readFile(new URL(poster, page))).length > 0);
+});
+
 test("reusable package includes its worker and licenses, and excludes recorded demo data", async () => {
   const { stdout } = await promisify(execFile)("npm", ["pack", "--dry-run", "--json"], {
     cwd: new URL("../", import.meta.url), maxBuffer: 4 * 1024 * 1024,
