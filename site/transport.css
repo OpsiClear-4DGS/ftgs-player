@@ -4,9 +4,9 @@
   position: relative;
   display: grid;
   place-items: center;
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: var(--radius-md);
@@ -19,8 +19,7 @@
 .icon-button:active { background: var(--accent-dim); }
 .icon-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .icon-button .solid-icon { fill: currentColor; stroke: none; }
-#play-toggle { flex-basis: 44px; width: 44px; height: 44px; color: var(--text-primary); }
-#play-toggle svg { width: 22px; height: 22px; }
+#play-toggle { color: var(--text-primary); }
 .timeline-area { position: relative; flex: 1; min-width: 60px; height: 44px; display: flex; align-items: center; }
 #timeline {
   --progress: 0%;
@@ -49,7 +48,7 @@
 #volume { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 96px; margin: 0; padding: 12px; border: 1px solid var(--border-light); border-radius: var(--radius-md); opacity: 0; accent-color: var(--accent); background: var(--bg-elevated); pointer-events: none; }
 .audio-controls:hover #volume, .audio-controls:focus-within #volume { opacity: 1; pointer-events: auto; }
 .utility-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; }
-.playback-rate { appearance: none; -webkit-appearance: none; width: 64px; height: 40px; padding: 0 6px; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); font-size: 13px; text-align: center; text-align-last: center; cursor: pointer; }
+.playback-rate { appearance: none; -webkit-appearance: none; flex: 0 0 44px; width: 44px; height: 44px; padding: 0 2px; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); font-size: 13px; text-align: center; text-align-last: center; cursor: pointer; }
 .playback-rate:hover { color: var(--text-primary); background: var(--bg-hover); }
 .playback-rate option { background: var(--bg-elevated); }
 .secondary-actions { display: flex; gap: 4px; }
@@ -63,9 +62,8 @@
   .timeline-area { grid-area: seek; min-width: 0; height: 32px; }
   #timecode { grid-area: time; justify-self: end; font-size: 11px; }
   .audio-controls, #mute-toggle { grid-area: sound; }
-  .icon-button { flex-basis: 44px; width: 44px; height: 44px; }
   .utility-actions { grid-area: tools; gap: 2px; padding-left: 0; border-left: 0; }
-  .playback-rate { width: 52px; height: 44px; padding: 0 2px; font-size: 12px; }
+  .playback-rate { font-size: 12px; }
   .secondary-actions { position: absolute; right: 44px; bottom: 62px; z-index: 2; display: flex; flex-direction: column; gap: 0; width: 184px; padding: 4px; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-elevated); box-shadow: 0 8px 32px rgb(0 0 0 / 30%); }
   .secondary-actions .icon-button { display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; padding: 0 12px; font-size: 13px; }
   .secondary-actions .icon-button::after { display: none; }
