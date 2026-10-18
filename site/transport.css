@@ -49,7 +49,7 @@
 #volume { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 96px; margin: 0; padding: 12px; border: 1px solid var(--border-light); border-radius: var(--radius-md); opacity: 0; accent-color: var(--accent); background: var(--bg-elevated); pointer-events: none; }
 .audio-controls:hover #volume, .audio-controls:focus-within #volume { opacity: 1; pointer-events: auto; }
 .utility-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; }
-.playback-rate { width: 64px; height: 40px; padding: 0 6px; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; }
+.playback-rate { appearance: none; -webkit-appearance: none; width: 64px; height: 40px; padding: 0 6px; border: 1px solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--text-secondary); font-size: 13px; text-align: center; text-align-last: center; cursor: pointer; }
 .playback-rate:hover { color: var(--text-primary); background: var(--bg-hover); }
 .playback-rate option { background: var(--bg-elevated); }
 .secondary-actions { display: flex; gap: 4px; }
